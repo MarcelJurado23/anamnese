@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anamnese – Marcel Jurado Personal Training</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navy:   #080821;
+    --navy-2: #112240;
+    --navy-3: #1d3461;
+    --teal:   #4fd1c5;
+    --teal-2: #38b2ac;
+    --cream:  #faf8f5;
+    --cream-2:#f0ece6;
+    --text:   #ccd6f6;
+    --muted:  #8892b0;
+    --white:  #ffffff;
+    --error:  #ff6b6b;
+    --success:#4fd1c5;
+    --radius: 4px;
+    --transition: 0.25s ease;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #080821;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 80% 60% at 20% 0%, rgba(79,209,197,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 100%, rgba(79,209,197,0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 32px 48px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(79,209,197,0.12);
+  }
+
+  .logo-area { display: flex; align-items: center; gap: 16px; }
+
+  .logo-mark {
+    width: 44px; height: 44px;
+    border: 1.5px solid var(--teal);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px; font-weight: 600;
+    color: var(--teal);
+    letter-spacing: 0.05em;
+  }
+
+  .logo-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 500;
+    color: var(--white);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  .logo-text span { display: block; font-size: 10px; font-weight: 300; color: var(--muted); letter-spacing: 0.2em; }
+
+  .header-tag {
+    font-size: 11px; font-weight: 400; color: var(--teal);
+    letter-spacing: 0.2em; text-transform: uppercase;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-wrap {
+    position: relative; z-index: 10;
+    padding: 28px 48px 0;
+  }
+
+  .progress-steps {
+    display: flex; align-items: center; gap: 0;
+    max-width: 720px; margin: 0 auto;
+  }
+
+  .step-item {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    flex: 1; position: relative; cursor: default;
+  }
+
+  .step-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 14px; left: calc(50% + 14px);
+    width: calc(100% - 28px);
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    transition: background var(--transition);
+  }
+
+  .step-item.completed:not(:last-child)::after { background: var(--teal); }
+
+  .step-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 500; color: var(--muted);
+    transition: all var(--transition);
+    background: #080821;
+  }
+
+  .step-item.active .step-dot {
+    border-color: var(--teal); color: var(--teal);
+    box-shadow: 0 0 12px rgba(79,209,197,0.3);
+  }
+
+  .step-item.completed .step-dot {
+    background: var(--teal); border-color: var(--teal); color: var(--navy);
+    font-weight: 700;
+  }
+
+  .step-label {
+    font-size: 10px; font-weight: 400; color: var(--muted);
+    letter-spacing: 0.12em; text-transform: uppercase; text-align: center;
+    transition: color var(--transition);
+  }
+
+  .step-item.active .step-label { color: var(--teal); }
+  .step-item.completed .step-label { color: rgba(79,209,197,0.6); }
+
+  /* ── FORM CONTAINER ── */
+  .form-outer {
+    position: relative; z-index: 10;
+    max-width: 760px; margin: 0 auto;
+    padding: 40px 48px 80px;
+  }
+
+  .form-step { display: none; }
+  .form-step.active { display: block; animation: fadeUp 0.4s ease; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-heading {
+    margin-bottom: 36px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .step-num {
+    font-size: 11px; font-weight: 400; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 8px;
+  }
+
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 300; color: var(--white);
+    line-height: 1.15;
+  }
+
+  .step-sub {
+    margin-top: 8px; font-size: 13px; color: var(--muted); line-height: 1.6;
+  }
+
+  /* ── FIELD GROUPS ── */
+  .field-grid {
+    display: grid;
+    gap: 24px;
+  }
+
+  .field-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .field-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+
+  .field-group label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--cream);
+  }
+
+  .field-group input,
+  .field-group select,
+  .field-group textarea {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 300;
+    padding: 12px 16px;
+    outline: none;
+    transition: all var(--transition);
+    width: 100%;
+  }
+
+  .field-group textarea { resize: vertical; min-height: 80px; }
+
+  .field-group input:focus,
+  .field-group select:focus,
+  .field-group textarea:focus {
+    border-color: rgba(79,209,197,0.5);
+    background: rgba(79,209,197,0.04);
+    box-shadow: 0 0 0 3px rgba(79,209,197,0.08);
+  }
+
+  .field-group input::placeholder,
+  .field-group textarea::placeholder { color: rgba(136,146,176,0.4); }
+
+  .field-group select option { background: var(--navy-2); color: var(--text); }
+
+  /* ── SECTION DIVIDER ── */
+  .section-divider {
+    margin: 36px 0 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .section-divider span {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--teal); white-space: nowrap;
+  }
+
+  .section-divider::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(to right, rgba(79,209,197,0.3), transparent);
+  }
+
+  /* ── RADIO / CHECKBOX GROUPS ── */
+  .check-grid {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px;
+  }
+
+  .check-item {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius);
+    padding: 9px 14px;
+    cursor: pointer;
+    transition: all var(--transition);
+    user-select: none;
+  }
+
+  .check-item:hover { border-color: rgba(79,209,197,0.3); background: rgba(79,209,197,0.04); }
+
+  .check-item input { display: none; }
+
+  .check-item input:checked + span { color: var(--teal); }
+  .check-item:has(input:checked) {
+    border-color: var(--teal);
+    background: rgba(79,209,197,0.08);
+  }
+
+  .check-item span { font-size: 13px; font-weight: 300; color: var(--text); }
+
+  /* ── SCALE SLIDER ── */
+  .scale-wrap { margin-top: 4px; }
+
+  .scale-labels {
+    display: flex; justify-content: space-between;
+    font-size: 10px; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.08em;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%; height: 2px;
+    background: linear-gradient(to right, var(--teal) var(--pct, 50%), rgba(255,255,255,0.1) var(--pct, 50%));
+    border-radius: 2px; outline: none; cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    background: var(--teal);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(79,209,197,0.5);
+    transition: transform var(--transition);
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+  .scale-value {
+    text-align: right; margin-top: 4px;
+    font-size: 20px; font-family: 'Cormorant Garamond', serif;
+    font-weight: 500; color: var(--teal);
+  }
+
+  /* ── PARQ ALERT BOX ── */
+  .alert-box {
+    background: rgba(255,107,107,0.08);
+    border: 1px solid rgba(255,107,107,0.25);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    font-size: 13px; line-height: 1.6; color: rgba(255,200,200,0.9);
+    margin-top: 20px; display: none;
+  }
+
+  .alert-box.visible { display: block; }
+
+  /* ── LONGEVITY METRICS ── */
+  .metric-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 6px;
+    padding: 20px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+
+  .metric-card .metric-name {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--teal);
+  }
+
+  .metric-card .metric-desc {
+    font-size: 12px; color: var(--muted); line-height: 1.5;
+  }
+
+  /* ── BODY DIAGRAM ── */
+  .body-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 8px;
+  }
+
+  .pain-zone {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+
+  .pain-zone label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 8px;
+  }
+
+  .pain-zone input[type="range"] { margin-bottom: 2px; }
+
+  .pain-val { font-size: 18px; font-family: 'Cormorant Garamond', serif; color: var(--teal); }
+
+  /* ── NAVIGATION BUTTONS ── */
+  .form-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 48px; padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.18em;
+    text-transform: uppercase; text-decoration: none;
+    padding: 14px 28px; border-radius: var(--radius);
+    cursor: pointer; border: none; transition: all var(--transition);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--muted);
+  }
+
+  .btn-ghost:hover {
+    border-color: rgba(255,255,255,0.3); color: var(--text);
+  }
+
+  .btn-primary {
+    background: var(--teal);
+    color: var(--navy);
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(79,209,197,0.25);
+  }
+
+  .btn-primary:hover {
+    background: #5de0d4;
+    box-shadow: 0 6px 28px rgba(79,209,197,0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-primary:disabled {
+    opacity: 0.5; cursor: not-allowed; transform: none;
+  }
+
+  .btn svg { width: 16px; height: 16px; }
+
+  /* ── SUCCESS STATE ── */
+  .success-screen {
+    display: none; text-align: center; padding: 80px 40px;
+    animation: fadeUp 0.5s ease;
+  }
+
+  .success-screen.visible { display: block; }
+
+  .success-icon {
+    width: 72px; height: 72px;
+    border: 2px solid var(--teal);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 32px;
+    font-size: 28px; color: var(--teal);
+  }
+
+  .success-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px; font-weight: 300; color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .success-sub { font-size: 15px; color: var(--muted); line-height: 1.7; max-width: 440px; margin: 0 auto; }
+
+  /* ── ERROR MESSAGES ── */
+  .field-error {
+    font-size: 11px; color: var(--error); margin-top: 3px;
+    letter-spacing: 0.05em; display: none;
+  }
+
+  .field-group.has-error input,
+  .field-group.has-error select,
+  .field-group.has-error textarea {
+    border-color: rgba(255,107,107,0.5);
+  }
+
+  .field-group.has-error .field-error { display: block; }
+
+  /* ── LOADING SPINNER ── */
+  .spinner {
+    display: inline-block; width: 16px; height: 16px;
+    border: 2px solid rgba(10,25,47,0.3);
+    border-top-color: var(--navy);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── TOOLTIP ── */
+  .field-hint {
+    font-size: 11px; color: var(--muted); line-height: 1.5; margin-top: 2px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    header { padding: 20px 24px; }
+    .progress-wrap { padding: 20px 24px 0; }
+    .form-outer { padding: 28px 24px 60px; }
+    .field-grid.cols-2,
+    .field-grid.cols-3 { grid-template-columns: 1fr; }
+    .step-label { display: none; }
+    .body-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── PRINT / PDF ── */
+  @media print {
+    header, .progress-wrap, .form-nav, .btn, #mainForm { display: none !important; }
+    body { background: #fff !important; color: #1a1a2e !important; }
+    .success-screen { display: block !important; }
+    .success-screen .btn { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-area">
+    <div class="logo-mark">MJ</div>
+    <div class="logo-text">
+      Marcel Jurado
+      <span>Personal Training · Physiotherapie</span>
+    </div>
+  </div>
+  <span class="header-tag">Erstanamnese</span>
+</header>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-steps" id="progressSteps">
+    <div class="step-item active" data-step="1">
+      <div class="step-dot">1</div>
+      <span class="step-label">Person</span>
+    </div>
+    <div class="step-item" data-step="2">
+      <div class="step-dot">2</div>
+      <span class="step-label">Gesundheit</span>
+    </div>
+    <div class="step-item" data-step="3">
+      <div class="step-dot">3</div>
+      <span class="step-label">Schmerzen</span>
+    </div>
+    <div class="step-item" data-step="4">
+      <div class="step-dot">4</div>
+      <span class="step-label">Lifestyle</span>
+    </div>
+    <div class="step-item" data-step="5">
+      <div class="step-dot">5</div>
+      <span class="step-label">Training</span>
+    </div>
+    <div class="step-item" data-step="6">
+      <div class="step-dot">6</div>
+      <span class="step-label">Ernährung</span>
+    </div>
+    <div class="step-item" data-step="7">
+      <div class="step-dot">7</div>
+      <span class="step-label">Longevity</span>
+    </div>
+    <div class="step-item" data-step="8">
+      <div class="step-dot">8</div>
+      <span class="step-label">Ziele</span>
+    </div>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-outer">
+  <form id="mainForm" novalidate>
+
+    <!-- ── STEP 1: PERSÖNLICHE DATEN ── -->
+    <div class="form-step active" id="step-1">
+      <div class="step-heading">
+        <div class="step-num">01 / 08</div>
+        <h2 class="step-title">Persönliche Daten</h2>
+        <p class="step-sub">Deine Basisinformationen für die Erstellung deines Profils.</p>
+      </div>
+
+      <div class="field-grid cols-2">
+        <div class="field-group">
+          <label>Vorname *</label>
+          <input type="text" id="vorname" name="vorname" placeholder="Dein Vorname" required>
+          <span class="field-error">Bitte Vornamen eingeben</span>
+        </div>
+        <div class="field-group">
+          <label>Nachname *</label>
+          <input type="text" id="nachname" name="nachname" placeholder="Dein Nachname" required>
+          <span class="field-error">Bitte Nachnamen eingeben</span>
+        </div>
+      </div>
+
+      <div class="field-grid cols-2" style="margin-top:24px">
+        <div class="field-group">
+          <label>E-Mail *</label>
+          <input type="email" id="email" name="email" placeholder="name@email.de" required>
+          <span class="field-error">Gültige E-Mail-Adresse eingeben</span>
+        </div>
+        <div class="field-group">
+          <label>Telefon</label>
+          <input type="tel" id="telefon" name="telefon" placeholder="+49 …">
+        </div>
+      </div>
+
+      <div class="field-grid cols-3" style="margin-top:24px">
+        <div class="field-group">
+          <label>Geburtsdatum *</label>
+          <input type="date" id="geburtsdatum" name="geburtsdatum" required>
+          <span class="field-error">Geburtsdatum angeben</span>
+        </div>
+        <div class="field-group">
+          <label>Geschlecht</label>
+          <select id="geschlecht" name="geschlecht">
+            <option value="">— wählen —</option>
+            <option value="weiblich">Weiblich</option>
+            <option value="männlich">Männlich</option>
+            <option value="divers">Divers</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Beruf</label>
+          <input type="text" id="beruf" name="beruf" placeholder="Dein Beruf">
+        </div>
+      </div>
+
+      <div class="field-grid cols-2" style="margin-top:24px">
+        <div class="field-group">
+          <label>Adresse</label>
+          <input type="text" id="adresse" name="adresse" placeholder="Straße & Hausnummer">
+        </div>
+        <div class="field-group">
+          <label>PLZ / Ort</label>
+          <input type="text" id="plz_ort" name="plz_ort" placeholder="10999 Berlin">
+        </div>
+      </div>
+
+      <div class="section-divider"><span>Körpermessungen</span></div>
+
+      <div class="field-grid cols-3">
+        <div class="field-group">
+          <label>Größe (cm) *</label>
+          <input type="number" id="groesse" name="groesse" placeholder="175" min="140" max="220" required oninput="calcBMI()">
+          <span class="field-error">Größe angeben</span>
+        </div>
+        <div class="field-group">
+          <label>Gewicht (kg) *</label>
+          <input type="number" id="gewicht" name="gewicht" placeholder="72" min="40" max="200" step="0.1" required oninput="calcBMI()">
+          <span class="field-error">Gewicht angeben</span>
+        </div>
+        <div class="field-group">
+          <label>BMI (auto)</label>
+          <input type="text" id="bmi_display" readonly placeholder="—" style="opacity:0.6;cursor:default">
+          <span class="field-hint">Wird automatisch berechnet</span>
+        </div>
+      </div>
+
+      <div class="section-divider"><span>Körperumfänge (optional)</span></div>
+
+      <div class="field-grid cols-3">
+        <div class="field-group">
+          <label>Oberarm (cm)</label>
+          <input type="number" id="oberarm" name="oberarm" placeholder="32" step="0.1" min="10" max="60">
+        </div>
+        <div class="field-group">
+          <label>Brust (cm)</label>
+          <input type="number" id="brust" name="brust" placeholder="95" step="0.1" min="50" max="180">
+        </div>
+        <div class="field-group">
+          <label>Taille (cm)</label>
+          <input type="number" id="taille" name="taille" placeholder="80" step="0.1" min="40" max="160">
+        </div>
+        <div class="field-group">
+          <label>Hüfte (cm)</label>
+          <input type="number" id="huefte" name="huefte" placeholder="95" step="0.1" min="50" max="180">
+        </div>
+        <div class="field-group">
+          <label>Gesamtumfang Beine / Po (cm)</label>
+          <input type="number" id="beine_po" name="beine_po" placeholder="100" step="0.1" min="40" max="180">
+        </div>
+        <div class="field-group">
+          <label>Oberschenkel (cm)</label>
+          <input type="number" id="oberschenkel" name="oberschenkel" placeholder="55" step="0.1" min="20" max="100">
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <span></span>
+        <button type="button" class="btn btn-primary" onclick="nextStep(1)">
+          Weiter
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 2: GESUNDHEIT / PAR-Q+ ── -->
+    <div class="form-step" id="step-2">
+      <div class="step-heading">
+        <div class="step-num">02 / 08</div>
+        <h2 class="step-title">Gesundheit & Medizin</h2>
+        <p class="step-sub">PAR-Q+ Risikoabfrage + medizinische Vorgeschichte. Alle Angaben sind vertraulich und dienen deiner Sicherheit.</p>
+      </div>
+
+      <div class="section-divider"><span>PAR-Q+ Kardiovaskuläre Risikoabfrage</span></div>
+
+      <div class="field-grid" style="gap:14px">
+        <div class="field-group">
+          <label>Hat ein Arzt jemals gesagt, dass du eine Herzerkrankung hast?</label>
+          <div class="check-grid">
+            <label class="check-item"><input type="radio" name="parq_herz" value="nein"> <span>Nein</span></label>
+            <label class="check-item"><input type="radio" name="parq_herz" value="ja"> <span>Ja</span></label>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Hast du Brustschmerzen bei körperlicher Belastung oder in Ruhe?</label>
+          <div class="check-grid">
+            <label class="check-item"><input type="radio" name="parq_brust" value="nein"> <span>Nein</span></label>
+            <label class="check-item"><input type="radio" name="parq_brust" value="ja"> <span>Ja</span></label>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Leidest du an unkontrolliertem Bluthochdruck (≥ 160/90 mmHg)?</label>
+          <div class="check-grid">
+            <label class="check-item"><input type="radio" name="parq_blutdruck" value="nein"> <span>Nein</span></label>
+            <label class="check-item"><input type="radio" name="parq_blutdruck" value="ja"> <span>Ja</span></label>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Hast du Diabetes Typ 1 oder 2?</label>
+          <div class="check-grid">
+            <label class="check-item"><input type="radio" name="parq_diabetes" value="nein"> <span>Nein</span></label>
+            <label class="check-item"><input type="radio" name="parq_diabetes" value="ja_typ1"> <span>Ja – Typ 1</span></label>
+            <label class="check-item"><input type="radio" name="parq_diabetes" value="ja_typ2"> <span>Ja – Typ 2</span></label>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Bist du schwanger oder weniger als 3 Monate postpartal?</label>
+          <div class="check-grid">
+            <label class="check-item"><input type="radio" name="parq_schwanger" value="nein"> <span>Nein</span></label>
+            <label class="check-item"><input type="radio" name="parq_schwanger" value="ja"> <span>Ja</span></label>
+            <label class="check-item"><input type="radio" name="parq_schwanger" value="na"> <span>Nicht zutreffend</span></label>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Nimmst du derzeit verschreibungspflichtige Medikamente?</label>
+          <div class="check-grid">
+            <label class="check-item"><input type="radio" name="parq_medikamente" value="nein" onchange="toggleField('medikamente_detail', false)"> <span>Nein</span></label>
+            <label class="check-item"><input type="radio" name="parq_medikamente" value="ja" onchange="toggleField('medikamente_detail', true)"> <span>Ja</span></label>
+          </div>
+        </div>
+        <div class="field-group" id="medikamente_detail" style="display:none">
+          <label>Welche Medikamente?</label>
+          <textarea name="medikamente_list" placeholder="Medikamentenname, Dosis…"></textarea>
+        </div>
+      </div>
+
+      <div id="parq-alert" class="alert-box">
+        ⚠️ Aufgrund deiner Angaben empfehle ich vor Trainingsbeginn eine ärztliche Freigabe. Ich werde dich bei der Terminvereinbarung darauf hinweisen und ggf. ein ärztliches Attest anfordern.
+      </div>
+
+      <div class="section-divider"><span>Risikofaktoren</span></div>
+
+      <div class="field-group">
+        <label>Bestehende Risikofaktoren (Mehrfachauswahl möglich)</label>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="risiken" value="allergien"> <span>Allergien</span></label>
+          <label class="check-item"><input type="checkbox" name="risiken" value="thrombose"> <span>Thrombose</span></label>
+          <label class="check-item"><input type="checkbox" name="risiken" value="abusus"> <span>Abusus</span></label>
+          <label class="check-item"><input type="checkbox" name="risiken" value="nikotin"> <span>Nikotin</span></label>
+          <label class="check-item"><input type="checkbox" name="risiken" value="adipositas"> <span>Adipositas</span></label>
+          <label class="check-item"><input type="checkbox" name="risiken" value="osteoporose"> <span>Osteoporose</span></label>
+          <label class="check-item"><input type="checkbox" name="risiken" value="hypothyreose"> <span>Hypothyreose</span></label>
+          <label class="check-item"><input type="checkbox" name="risiken" value="insulinresistenz"> <span>Insulinresistenz</span></label>
+        </div>
+      </div>
+
+      <div class="section-divider"><span>Verletzungen & OPs</span></div>
+
+      <div class="field-grid cols-2">
+        <div class="field-group">
+          <label>Frühere Verletzungen / Erkrankungen</label>
+          <textarea name="verletzungen" placeholder="z.B. Kreuzbandriss 2019 rechts, Schulter-OP 2021…" style="min-height:100px"></textarea>
+        </div>
+        <div class="field-group">
+          <label>Operationen</label>
+          <textarea name="ops" placeholder="z.B. Meniskus OP 2020, Bandscheiben-OP L4/L5…" style="min-height:100px"></textarea>
+        </div>
+      </div>
+
+      <div class="field-group" style="margin-top:24px">
+        <label>Aktueller bekannter Blutdruck (mmHg)</label>
+        <input type="text" name="blutdruck" placeholder="z.B. 125/80" style="max-width:200px">
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn btn-ghost" onclick="prevStep(2)">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          Zurück
+        </button>
+        <button type="button" class="btn btn-primary" onclick="nextStep(2)">
+          Weiter
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 3: SCHMERZEN ── -->
+    <div class="form-step" id="step-3">
+      <div class="step-heading">
+        <div class="step-num">03 / 08</div>
+        <h2 class="step-title">Schmerzen & Beschwerden</h2>
+        <p class="step-sub">Bewerte aktuelle Schmerzen (0 = kein Schmerz, 10 = stärkster vorstellbarer Schmerz).</p>
+      </div>
+
+      <div class="field-group">
+        <label>Hast du aktuell Schmerzen oder Beschwerden?</label>
+        <div class="check-grid">
+          <label class="check-item"><input type="radio" name="hat_schmerzen" value="nein" onchange="toggleField('schmerz_details', false)"> <span>Nein</span></label>
+          <label class="check-item"><input type="radio" name="hat_schmerzen" value="ja" onchange="toggleField('schmerz_details', true)"> <span>Ja</span></label>
+        </div>
+      </div>
+
+      <div id="schmerz_details" style="display:none">
+        <div class="section-divider"><span>Schmerzintensität nach Körperregion</span></div>
+
+        <div class="body-grid">
+          <!-- Nacken -->
+          <div class="pain-zone">
+            <label>Nacken / HWS</label>
+            <div class="scale-wrap">
+              <div class="scale-labels"><span>0 – kein</span><span>10 – stark</span></div>
+              <input type="range" name="schmerz_nacken" min="0" max="10" value="0"
+                oninput="updateRange(this,'nacken_val')" style="--pct:0%">
+              <div class="pain-val" id="nacken_val">0</div>
+            </div>
+          </div>
+          <!-- Schulter -->
+          <div class="pain-zone">
+            <label>Schulter</label>
+            <div class="scale-wrap">
+              <div class="scale-labels"><span>0 – kein</span><span>10 – stark</span></div>
+              <input type="range" name="schmerz_schulter" min="0" max="10" value="0"
+                oninput="updateRange(this,'schulter_val')" style="--pct:0%">
+              <div class="pain-val" id="schulter_val">0</div>
+            </div>
+          </div>
+          <!-- LWS -->
+          <div class="pain-zone">
+            <label>Rücken / LWS</label>
+            <div class="scale-wrap">
+              <div class="scale-labels"><span>0 – kein</span><span>10 – stark</span></div>
+              <input type="range" name="schmerz_lws" min="0" max="10" value="0"
+                oninput="updateRange(this,'lws_val')" style="--pct:0%">
+              <div class="pain-val" id="lws_val">0</div>
+            </div>
+          </div>
+          <!-- Hüfte -->
+          <div class="pain-zone">
+            <label>Hüfte / ISG</label>
+            <div class="scale-wrap">
+              <div class="scale-labels"><span>0 – kein</span><span>10 – stark</span></div>
+              <input type="range" name="schmerz_huefte" min="0" max="10" value="0"
+                oninput="updateRange(this,'huefte_val')" style="--pct:0%">
+              <div class="pain-val" id="huefte_val">0</div>
+            </div>
+          </div>
+          <!-- Knie -->
+          <div class="pain-zone">
+            <label>Knie</label>
+            <div class="scale-wrap">
+              <div class="scale-labels"><span>0 – kein</span><span>10 – stark</span></div>
+              <input type="range" name="schmerz_knie" min="0" max="10" value="0"
+                oninput="updateRange(this,'knie_val')" style="--pct:0%">
+              <div class="pain-val" id="knie_val">0</div>
+            </div>
+          </div>
+          <!-- Sprunggelenk -->
+          <div class="pain-zone">
+            <label>Sprunggelenk / Fuß</label>
+            <div class="scale-wrap">
+              <div class="scale-labels"><span>0 – kein</span><span>10 – stark</span></div>
+              <input type="range" name="schmerz_sprunggelenk" min="0" max="10" value="0"
+                oninput="updateRange(this,'sg_val')" style="--pct:0%">
+              <div class="pain-val" id="sg_val">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-divider"><span>Schmerzcharakter</span></div>
+
+        <div class="field-grid cols-2">
+          <div class="field-group">
+            <label>Seit wann bestehen die Hauptbeschwerden?</label>
+            <select name="schmerz_dauer">
+              <option value="">— wählen —</option>
+              <option>Akut (< 6 Wochen)</option>
+              <option>Subakut (6 Wo – 3 Mon)</option>
+              <option>Chronisch (> 3 Monate)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Schmerz tritt auf</label>
+            <div class="check-grid" style="margin-top:0">
+              <label class="check-item"><input type="checkbox" name="schmerz_wann" value="belastung"> <span>Bei Belastung</span></label>
+              <label class="check-item"><input type="checkbox" name="schmerz_wann" value="ruhe"> <span>In Ruhe</span></label>
+              <label class="check-item"><input type="checkbox" name="schmerz_wann" value="nacht"> <span>Nachts</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-grid cols-2" style="margin-top:24px">
+          <div class="field-group">
+            <label>Was lindert die Schmerzen?</label>
+            <input type="text" name="schmerz_lindert" placeholder="z.B. Wärme, Ruhe, Dehnen…">
+          </div>
+          <div class="field-group">
+            <label>Was verschlechtert die Schmerzen?</label>
+            <input type="text" name="schmerz_verschlechtert" placeholder="z.B. Sitzen, Treppensteigen…">
+          </div>
+        </div>
+
+        <div class="field-group" style="margin-top:24px">
+          <label>Frühere Physiotherapie oder Behandlungen?</label>
+          <textarea name="physio_vorher" placeholder="Was wurde behandelt? Mit welchem Ergebnis?"></textarea>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn btn-ghost" onclick="prevStep(3)">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          Zurück
+        </button>
+        <button type="button" class="btn btn-primary" onclick="nextStep(3)">
+          Weiter
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 4: LIFESTYLE ── -->
+    <div class="form-step" id="step-4">
+      <div class="step-heading">
+        <div class="step-num">04 / 08</div>
+        <h2 class="step-title">Lifestyle & Alltag</h2>
+        <p class="step-sub">Schlaf, Stress und Arbeitsalltag sind entscheidende Faktoren für deinen Trainingserfolg.</p>
+      </div>
+
+      <div class="section-divider"><span>Schlaf</span></div>
+
+      <div class="field-grid cols-2">
+        <div class="field-group">
+          <label>Durchschnittliche Schlafdauer</label>
+          <select name="schlaf_stunden">
+            <option value="">— wählen —</option>
+            <option>< 5 Stunden</option>
+            <option>5–6 Stunden</option>
+            <option>6–7 Stunden</option>
+            <option>7–8 Stunden</option>
+            <option>> 8 Stunden</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Schlafqualität (subjektiv)</label>
+          <div class="scale-wrap" style="margin-top:4px">
+            <div class="scale-labels"><span>1 – sehr schlecht</span><span>10 – ausgezeichnet</span></div>
+            <input type="range" name="schlaf_qualitaet" min="1" max="10" value="5"
+              oninput="updateRange(this,'schlaf_val')" style="--pct:44%">
+            <div class="scale-value" id="schlaf_val">5</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"><span>Stress & Mentale Gesundheit</span></div>
+
+      <div class="field-group">
+        <label>Durchschnittliches Stresslevel (letzte 4 Wochen)</label>
+        <div class="scale-wrap" style="margin-top:4px">
+          <div class="scale-labels"><span>1 – kaum Stress</span><span>10 – extremer Stress</span></div>
+          <input type="range" name="stress_level" min="1" max="10" value="5"
+            oninput="updateRange(this,'stress_val')" style="--pct:44%">
+          <div class="scale-value" id="stress_val">5</div>
+        </div>
+      </div>
+
+      <div class="field-group" style="margin-top:24px">
+        <label>Subjektive Energie / Vitalität (allgemein)</label>
+        <div class="scale-wrap" style="margin-top:4px">
+          <div class="scale-labels"><span>1 – erschöpft</span><span>10 – voller Energie</span></div>
+          <input type="range" name="energie_level" min="1" max="10" value="5"
+            oninput="updateRange(this,'energie_val')" style="--pct:44%">
+          <div class="scale-value" id="energie_val">5</div>
+        </div>
+      </div>
+
+      <div class="section-divider"><span>Arbeitsalltag</span></div>
+
+      <div class="field-grid cols-2">
+        <div class="field-group">
+          <label>Tägliche Sitz-Stunden (Büro/Homeoffice)</label>
+          <select name="sitz_stunden">
+            <option value="">— wählen —</option>
+            <option>< 2 Stunden</option>
+            <option>2–4 Stunden</option>
+            <option>4–6 Stunden</option>
+            <option>6–8 Stunden</option>
+            <option>> 8 Stunden</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Tägliche Schritte (Schätzung)</label>
+          <select name="schritte_tag">
+            <option value="">— wählen —</option>
+            <option>< 3.000</option>
+            <option>3.000 – 6.000</option>
+            <option>6.000 – 10.000</option>
+            <option>> 10.000</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group" style="margin-top:24px">
+        <label>Berufsbedingte körperliche Belastungen</label>
+        <input type="text" name="berufsbelastung" placeholder="z.B. viel Stehen, schweres Heben, Bildschirmarbeit…">
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn btn-ghost" onclick="prevStep(4)">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          Zurück
+        </button>
+        <button type="button" class="btn btn-primary" onclick="nextStep(4)">
+          Weiter
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 5: TRAINING ── -->
+    <div class="form-step" id="step-5">
+      <div class="step-heading">
+        <div class="step-num">05 / 08</div>
+        <h2 class="step-title">Trainingsgeschichte</h2>
+        <p class="step-sub">Dein sportlicher Hintergrund hilft mir, das Training optimal anzupassen.</p>
+      </div>
+
+      <div class="field-grid cols-2">
+        <div class="field-group">
+          <label>Trainingserfahrung (Jahre)</label>
+          <select name="training_jahre">
+            <option value="">— wählen —</option>
+            <option>Kein Training bisher</option>
+            <option>< 1 Jahr</option>
+            <option>1–3 Jahre</option>
+            <option>3–5 Jahre</option>
+            <option>> 5 Jahre</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Aktuelle Trainingsfrequenz / Woche</label>
+          <select name="training_frequenz">
+            <option value="">— wählen —</option>
+            <option>0 – kein Training</option>
+            <option>1× pro Woche</option>
+            <option>2–3× pro Woche</option>
+            <option>4–5× pro Woche</option>
+            <option>> 5× pro Woche</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group" style="margin-top:24px">
+        <label>Welche Sportarten / Trainingsformen machst du aktuell?</label>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="sportarten" value="krafttraining"> <span>Krafttraining</span></label>
+          <label class="check-item"><input type="checkbox" name="sportarten" value="laufen"> <span>Laufen</span></label>
+          <label class="check-item"><input type="checkbox" name="sportarten" value="radfahren"> <span>Radfahren</span></label>
+          <label class="check-item"><input type="checkbox" name="sportarten" value="schwimmen"> <span>Schwimmen</span></label>
+          <label class="check-item"><input type="checkbox" name="sportarten" value="yoga"> <span>Yoga</span></label>
+          <label class="check-item"><input type="checkbox" name="sportarten" value="hiit"> <span>HIIT</span></label>
+          <label class="check-item"><input type="checkbox" name="sportarten" value="pilates"> <span>Pilates</span></label>
+          <label class="check-item"><input type="checkbox" name="sportarten" value="kampfsport"> <span>Kampfsport</span></label>
+          <label class="check-item"><input type="checkbox" name="sportarten" value="teamsport"> <span>Teamsport</span></label>
+          <label class="check-item"><input type="checkbox" name="sportarten" value="anderes_sport"> <span>Anderes</span></label>
+        </div>
+      </div>
+
+      <div class="section-divider"><span>Fitnesstests (falls bereits bekannt)</span></div>
+
+      <div class="field-grid cols-2">
+        <div class="field-group">
+          <label>Liegestütze (maximale Wiederholungen)</label>
+          <input type="number" name="liegestuetze_max" placeholder="z.B. 20" min="0" max="200">
+        </div>
+        <div class="field-group">
+          <label>Plank Hold (Sekunden)</label>
+          <input type="number" name="plank_hold_sek" placeholder="z.B. 60" min="0" max="600">
+        </div>
+        <div class="field-group">
+          <label>Wall-Sit Hold (Sekunden)</label>
+          <input type="number" name="wall_sit_sek" placeholder="z.B. 45" min="0" max="600">
+        </div>
+        <div class="field-group">
+          <label>1 km Laufzeit (min:sek)</label>
+          <input type="text" name="km_laufzeit" placeholder="z.B. 5:30">
+        </div>
+      </div>
+
+      <div class="field-group" style="margin-top:24px">
+        <label>Bisherige Erfahrungen mit Personal Training / Coaching</label>
+        <textarea name="pt_erfahrung" placeholder="Was hast du schon gemacht? Was hat gut funktioniert, was nicht?"></textarea>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn btn-ghost" onclick="prevStep(5)">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          Zurück
+        </button>
+        <button type="button" class="btn btn-primary" onclick="nextStep(5)">
+          Weiter
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 6: ERNÄHRUNG ── -->
+    <div class="form-step" id="step-6">
+      <div class="step-heading">
+        <div class="step-num">06 / 08</div>
+        <h2 class="step-title">Ernährung</h2>
+        <p class="step-sub">Ernährungsgewohnheiten sind ein zentraler Bestandteil deines Longevity-Profils.</p>
+      </div>
+
+      <div class="field-grid cols-2">
+        <div class="field-group">
+          <label>Mahlzeiten pro Tag (durchschnittlich)</label>
+          <select name="mahlzeiten_tag">
+            <option value="">— wählen —</option>
+            <option>1 Mahlzeit</option>
+            <option>2 Mahlzeiten</option>
+            <option>3 Mahlzeiten</option>
+            <option>4+ Mahlzeiten</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Wasserkonsum täglich</label>
+          <select name="wasser_konsum">
+            <option value="">— wählen —</option>
+            <option>< 1 Liter</option>
+            <option>1–2 Liter</option>
+            <option>2–3 Liter</option>
+            <option>> 3 Liter</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group" style="margin-top:24px">
+        <label>Ernährungsform / besondere Ernährungsweise</label>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="ernaehrung_form" value="omnivore"> <span>Omnivor (alles)</span></label>
+          <label class="check-item"><input type="checkbox" name="ernaehrung_form" value="vegetarisch"> <span>Vegetarisch</span></label>
+          <label class="check-item"><input type="checkbox" name="ernaehrung_form" value="vegan"> <span>Vegan</span></label>
+          <label class="check-item"><input type="checkbox" name="ernaehrung_form" value="lowcarb"> <span>Low Carb</span></label>
+          <label class="check-item"><input type="checkbox" name="ernaehrung_form" value="keto"> <span>Keto</span></label>
+          <label class="check-item"><input type="checkbox" name="ernaehrung_form" value="if"> <span>Intervallfasten (IF)</span></label>
+          <label class="check-item"><input type="checkbox" name="ernaehrung_form" value="paleo"> <span>Paleo</span></label>
+          <label class="check-item"><input type="checkbox" name="ernaehrung_form" value="mediterran"> <span>Mediterran</span></label>
+        </div>
+      </div>
+
+      <div class="field-grid cols-2" style="margin-top:24px">
+        <div class="field-group">
+          <label>Alkoholkonsum pro Woche</label>
+          <select name="alkohol">
+            <option value="">— wählen —</option>
+            <option>Kein Alkohol</option>
+            <option>Gelegentlich (1–2 Gläser/Wo)</option>
+            <option>Moderat (3–5 Gläser/Wo)</option>
+            <option>Häufig (täglich)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Koffeinkonsum täglich</label>
+          <select name="koffein">
+            <option value="">— wählen —</option>
+            <option>Kein Koffein</option>
+            <option>1 Kaffee / Tag</option>
+            <option>2–3 Kaffee / Tag</option>
+            <option>> 3 Kaffee / Tag</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group" style="margin-top:24px">
+        <label>Verdauungsprobleme / Unverträglichkeiten</label>
+        <input type="text" name="unvertraeglichkeiten" placeholder="z.B. Laktoseintoleranz, Glutenunverträglichkeit, Blähungen…">
+      </div>
+
+      <div class="field-group" style="margin-top:24px">
+        <label>Aktuelle Supplementierung</label>
+        <input type="text" name="supplements" placeholder="z.B. Vitamin D3, Magnesium, Omega-3, Kreatin…">
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn btn-ghost" onclick="prevStep(6)">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          Zurück
+        </button>
+        <button type="button" class="btn btn-primary" onclick="nextStep(6)">
+          Weiter
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 7: LONGEVITY BASELINE ── -->
+    <div class="form-step" id="step-7">
+      <div class="step-heading">
+        <div class="step-num">07 / 08</div>
+        <h2 class="step-title">Longevity Baseline</h2>
+        <p class="step-sub">Diese Tests werden beim Ersttermin gemessen. Falls du Werte bereits kennst, trage sie gerne ein. Alle anderen werden gemeinsam erhoben.</p>
+      </div>
+
+      <div class="field-grid cols-2" style="gap:20px">
+
+        <div class="metric-card">
+          <span class="metric-name">VO₂max (ml/kg/min)</span>
+          <span class="metric-desc">Kardiorespiratoire Fitness — der stärkste Longevity-Prädiktor. Wird beim Ersttermin via Ramsey-Test ermittelt.</span>
+          <input type="number" name="vo2max" placeholder="z.B. 42" min="15" max="90" step="0.1">
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-name">Griffstärke (kg)</span>
+          <span class="metric-desc">Predictor für Gesamtmortalität und Muskelgesundheit. Gemessen mit Dynamometer.</span>
+          <div class="field-grid cols-2" style="gap:10px; margin-top:0">
+            <div class="field-group">
+              <label style="font-size:10px">Rechts (kg)</label>
+              <input type="number" name="grip_rechts" placeholder="35" min="5" max="100" step="0.5">
+            </div>
+            <div class="field-group">
+              <label style="font-size:10px">Links (kg)</label>
+              <input type="number" name="grip_links" placeholder="33" min="5" max="100" step="0.5">
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-name">Single Leg Balance (sek)</span>
+          <span class="metric-desc">Gleichgewicht auf einem Bein, Augen geschlossen. Linked to 10-year mortality risk.</span>
+          <div class="field-grid cols-2" style="gap:10px; margin-top:0">
+            <div class="field-group">
+              <label style="font-size:10px">Rechts (sek)</label>
+              <input type="number" name="balance_rechts" placeholder="20" min="0" max="120" step="1">
+            </div>
+            <div class="field-group">
+              <label style="font-size:10px">Links (sek)</label>
+              <input type="number" name="balance_links" placeholder="18" min="0" max="120" step="1">
+            </div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-name">Sit & Reach (cm)</span>
+          <span class="metric-desc">Hüftbeuger- und Rücken-Flexibilität. ACSM-Normwerte nach Alter und Geschlecht.</span>
+          <input type="number" name="sit_reach" placeholder="z.B. +5" min="-30" max="40" step="0.5">
+        </div>
+
+        <div class="metric-card">
+          <span class="metric-name">Chair Stand Test (30 sek)</span>
+          <span class="metric-desc">Anzahl Aufstehen vom Stuhl in 30 Sekunden. Marker für funktionelle Beinkraft.</span>
+          <input type="number" name="chair_stand" placeholder="z.B. 14" min="0" max="40">
+        </div>
+
+        <div class="metric-card" style="grid-column: 1 / -1">
+          <span class="metric-name">Körperfett % — Jackson & Pollock</span>
+          <span class="metric-desc">Hautfaltenmessung wird beim Ersttermin durchgeführt. 3-Falten-Methode nach Geschlecht.</span>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:12px">
+            <!-- Frau -->
+            <div style="background:rgba(79,209,197,0.04); border:1px solid rgba(79,209,197,0.15); border-radius:4px; padding:14px">
+              <div style="font-size:10px; font-weight:500; letter-spacing:0.15em; color:var(--teal); text-transform:uppercase; margin-bottom:10px">Frau</div>
+              <div class="field-grid" style="gap:8px">
+                <div class="field-group">
+                  <label style="font-size:10px">Trizeps (mm)</label>
+                  <input type="number" name="jp_f_trizeps" id="jp_f_trizeps" placeholder="12" oninput="calcJP()" min="1" max="50" step="0.5">
+                </div>
+                <div class="field-group">
+                  <label style="font-size:10px">Hüfte (mm)</label>
+                  <input type="number" name="jp_f_huefte" id="jp_f_huefte" placeholder="15" oninput="calcJP()" min="1" max="50" step="0.5">
+                </div>
+                <div class="field-group">
+                  <label style="font-size:10px">Oberschenkel (mm)</label>
+                  <input type="number" name="jp_f_oberschenkel" id="jp_f_oberschenkel" placeholder="18" oninput="calcJP()" min="1" max="60" step="0.5">
+                </div>
+                <div class="field-group">
+                  <label style="font-size:10px">Ergebnis (%)</label>
+                  <input type="text" name="jp_f_ergebnis" id="jp_f_ergebnis" placeholder="— wird berechnet" readonly style="opacity:0.8; cursor:default; color:var(--teal); font-weight:500;">
+                </div>
+              </div>
+            </div>
+            <!-- Mann -->
+            <div style="background:rgba(79,209,197,0.04); border:1px solid rgba(79,209,197,0.15); border-radius:4px; padding:14px">
+              <div style="font-size:10px; font-weight:500; letter-spacing:0.15em; color:var(--teal); text-transform:uppercase; margin-bottom:10px">Mann</div>
+              <div class="field-grid" style="gap:8px">
+                <div class="field-group">
+                  <label style="font-size:10px">Brust (mm)</label>
+                  <input type="number" name="jp_m_brust" id="jp_m_brust" placeholder="10" oninput="calcJP()" min="1" max="50" step="0.5">
+                </div>
+                <div class="field-group">
+                  <label style="font-size:10px">Abdomen (mm)</label>
+                  <input type="number" name="jp_m_abdomen" id="jp_m_abdomen" placeholder="18" oninput="calcJP()" min="1" max="60" step="0.5">
+                </div>
+                <div class="field-group">
+                  <label style="font-size:10px">Oberschenkel (mm)</label>
+                  <input type="number" name="jp_m_oberschenkel" id="jp_m_oberschenkel" placeholder="12" oninput="calcJP()" min="1" max="50" step="0.5">
+                </div>
+                <div class="field-group">
+                  <label style="font-size:10px">Ergebnis (%)</label>
+                  <input type="text" name="jp_m_ergebnis" id="jp_m_ergebnis" placeholder="— wird berechnet" readonly style="opacity:0.8; cursor:default; color:var(--teal); font-weight:500;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn btn-ghost" onclick="prevStep(7)">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          Zurück
+        </button>
+        <button type="button" class="btn btn-primary" onclick="nextStep(7)">
+          Weiter
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 8: ZIELE ── -->
+    <div class="form-step" id="step-8">
+      <div class="step-heading">
+        <div class="step-num">08 / 08</div>
+        <h2 class="step-title">Ziele & Erwartungen</h2>
+        <p class="step-sub">Was treibt dich an? Klare Ziele sind der Ausgangspunkt für dein individuelles Programm.</p>
+      </div>
+
+      <div class="field-group">
+        <label>Was ist dein wichtigstes Trainingsziel?</label>
+        <div class="check-grid">
+          <label class="check-item"><input type="radio" name="hauptziel" value="gewicht"> <span>Gewichtsreduktion</span></label>
+          <label class="check-item"><input type="radio" name="hauptziel" value="muskelaufbau"> <span>Muskelaufbau</span></label>
+          <label class="check-item"><input type="radio" name="hauptziel" value="ausdauer"> <span>Ausdauer verbessern</span></label>
+          <label class="check-item"><input type="radio" name="hauptziel" value="schmerzen"> <span>Schmerzfreiheit</span></label>
+          <label class="check-item"><input type="radio" name="hauptziel" value="longevity"> <span>Longevity / Healthy Aging</span></label>
+          <label class="check-item"><input type="radio" name="hauptziel" value="performance"> <span>Sportliche Performance</span></label>
+          <label class="check-item"><input type="radio" name="hauptziel" value="haltung"> <span>Haltung & Mobilität</span></label>
+          <label class="check-item"><input type="radio" name="hauptziel" value="allgemein"> <span>Allgemeine Fitness</span></label>
+        </div>
+      </div>
+
+      <div class="field-group" style="margin-top:24px">
+        <label>Was möchtest du in 3 Monaten erreicht haben?</label>
+        <textarea name="ziel_3monate" placeholder="Beschreibe so konkret wie möglich: Was soll sich verändert haben?"></textarea>
+      </div>
+
+      <div class="field-group" style="margin-top:24px">
+        <label>Was hast du bisher schon versucht und weshalb hat es nicht funktioniert?</label>
+        <textarea name="was_nicht_funktioniert" placeholder="Ehrliche Antwort hilft mir, die richtigen Strategien zu wählen."></textarea>
+      </div>
+
+      <div class="field-group" style="margin-top:24px">
+        <label>Zeitliche Verfügbarkeit für Training pro Woche</label>
+        <div class="check-grid">
+          <label class="check-item"><input type="radio" name="zeitbudget" value="1-2h"> <span>1–2 Std / Wo</span></label>
+          <label class="check-item"><input type="radio" name="zeitbudget" value="3-4h"> <span>3–4 Std / Wo</span></label>
+          <label class="check-item"><input type="radio" name="zeitbudget" value="5-6h"> <span>5–6 Std / Wo</span></label>
+          <label class="check-item"><input type="radio" name="zeitbudget" value="7+h"> <span>7+ Std / Wo</span></label>
+        </div>
+      </div>
+
+      <div class="field-group" style="margin-top:24px">
+        <label>Bevorzugtes Training</label>
+        <div class="check-grid">
+          <label class="check-item"><input type="checkbox" name="training_pref" value="pt_1zu1"> <span>1:1 Personal Training</span></label>
+          <label class="check-item"><input type="checkbox" name="training_pref" value="online"> <span>Online Coaching</span></label>
+          <label class="check-item"><input type="checkbox" name="training_pref" value="gruppe"> <span>Kleingruppentraining</span></label>
+        </div>
+      </div>
+
+      <div class="field-group" style="margin-top:24px">
+        <label>Weitere Informationen oder Anmerkungen</label>
+        <textarea name="anmerkungen" placeholder="Alles was ich noch wissen sollte…" style="min-height:100px"></textarea>
+      </div>
+
+      <!-- Datenschutz -->
+      <div style="margin-top:32px; padding:20px; background:rgba(79,209,197,0.04); border:1px solid rgba(79,209,197,0.2); border-radius:6px">
+        <div style="font-size:11px; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; color:var(--teal); margin-bottom:12px">Datenschutz *</div>
+        <p style="font-size:12px; line-height:1.7; color:var(--muted); margin-bottom:14px">
+          Bitte lies zunächst die 
+          <a href="https://marceljurado.com/datenschutz" target="_blank" style="color:var(--teal); text-decoration:underline">Datenschutzerklärung</a> 
+          und bestätige anschließend deine Zustimmung. Ohne Zustimmung kann das Formular nicht abgesendet werden.
+        </p>
+        <label style="display:flex; align-items:flex-start; gap:14px; cursor:pointer; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); padding:14px 16px; border-radius:4px; transition:all 0.25s ease" id="datenschutz_label">
+          <input type="checkbox" id="datenschutz" style="display:block !important; width:18px; height:18px; min-width:18px; accent-color:var(--teal); cursor:pointer; margin-top:2px">
+          <span style="font-size:13px; line-height:1.6; color:var(--text)">
+            Ich habe die Datenschutzerklärung gelesen und stimme der Verarbeitung meiner personenbezogenen Daten zur Trainingsplanung und -begleitung zu.
+          </span>
+        </label>
+        <span id="datenschutz_error" style="display:none; font-size:11px; color:var(--error); margin-top:8px; letter-spacing:0.05em">⚠ Bitte Datenschutzerklärung bestätigen um fortzufahren</span>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="btn btn-ghost" onclick="prevStep(8)">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          Zurück
+        </button>
+        <button type="button" class="btn btn-primary" id="submitBtn" onclick="submitForm()">
+          Absenden
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- SUCCESS SCREEN -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✓</div>
+    <h2 class="success-title">Vielen Dank!</h2>
+    <p class="success-sub">
+      Dein Anamnesebogen ist eingegangen. Ich werde mich innerhalb von 24 Stunden bei dir melden, um einen Ersttermin zu vereinbaren.
+      <br><br>
+      <em style="color:var(--teal)">— Marcel Jurado</em>
+    </p>
+    <button class="btn btn-primary" onclick="window.print()" style="margin-top:32px; font-size:13px">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+      Zusammenfassung als PDF speichern
+    </button>
+  </div>
+
+</div>
+
+<script>
+// ── CONFIG: Supabase ──────────────────────────────────────────────────
+const SUPABASE_URL  = 'https://llqftswzsvjhfolvpfqy.supabase.co';  // ← anpassen
+const SUPABASE_KEY  = 'sb_publishable_1PTHhbrNvSOmrHYn3bJHxg_CUfrlTJH';                  // ← anpassen
+const TABLE_NAME    = 'anamneseboegen';
+
+// ── STATE ─────────────────────────────────────────────────────────────
+let currentStep = 1;
+const totalSteps = 8;
+
+// ── BMI CALC ──────────────────────────────────────────────────────────
+function calcBMI() {
+  const h = parseFloat(document.getElementById('groesse').value) / 100;
+  const w = parseFloat(document.getElementById('gewicht').value);
+  const bmi = (h > 0 && w > 0) ? (w / (h * h)).toFixed(1) : '';
+  document.getElementById('bmi_display').value = bmi ? bmi : '—';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('groesse').addEventListener('input', calcBMI);
+  document.getElementById('gewicht').addEventListener('input', calcBMI);
+  document.getElementById('geburtsdatum').addEventListener('change', calcJP);
+  document.querySelectorAll('input[name^="parq_"]').forEach(el => {
+    el.addEventListener('change', checkParQ);
+  });
+  ['jp_f_trizeps','jp_f_huefte','jp_f_oberschenkel','jp_m_brust','jp_m_abdomen','jp_m_oberschenkel'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', calcJP);
+  });
+});
+
+// calcBMI defined above
+
+// ── RANGE SLIDERS ─────────────────────────────────────────────────────
+function updateRange(el, valId) {
+  const pct = ((el.value - el.min) / (el.max - el.min) * 100).toFixed(1);
+  el.style.setProperty('--pct', pct + '%');
+  document.getElementById(valId).textContent = el.value;
+}
+
+// ── TOGGLE CONDITIONAL FIELDS ─────────────────────────────────────────
+function toggleField(id, show) {
+  document.getElementById(id).style.display = show ? 'block' : 'none';
+}
+
+// ── PAR-Q ALERT ───────────────────────────────────────────────────────
+function checkParQ() {
+  const riskFields = ['parq_herz','parq_brust','parq_blutdruck'];
+  const hasRisk = riskFields.some(name => {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el && el.value === 'ja';
+  });
+  const diabetesEl = document.querySelector('input[name="parq_diabetes"]:checked');
+  const hasDiabetes = diabetesEl && diabetesEl.value !== 'nein' && diabetesEl.value !== '';
+  document.getElementById('parq-alert').classList.toggle('visible', hasRisk || hasDiabetes);
+}
+
+// parq listeners set in DOMContentLoaded
+
+// ── STEP NAVIGATION ───────────────────────────────────────────────────
+function nextStep(from) {
+  if (!validateStep(from)) return;
+  showStep(from + 1);
+}
+
+function prevStep(from) {
+  showStep(from - 1);
+}
+
+function showStep(n) {
+  document.getElementById(`step-${currentStep}`).classList.remove('active');
+  currentStep = n;
+  document.getElementById(`step-${currentStep}`).classList.add('active');
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  document.querySelectorAll('.step-item').forEach(item => {
+    const s = parseInt(item.dataset.step);
+    item.classList.remove('active', 'completed');
+    if (s === currentStep) item.classList.add('active');
+    if (s < currentStep)   item.classList.add('completed');
+    if (s < currentStep) {
+      item.querySelector('.step-dot').innerHTML =
+        `<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>`;
+    } else {
+      item.querySelector('.step-dot').textContent = s;
+    }
+  });
+}
+
+// ── VALIDATION ────────────────────────────────────────────────────────
+function validateStep(step) {
+  let valid = true;
+
+  if (step === 1) {
+    const required = ['vorname','nachname','email','geburtsdatum','groesse','gewicht'];
+    required.forEach(id => {
+      const el = document.getElementById(id);
+      const group = el.closest('.field-group');
+      if (!el.value.trim()) {
+        group.classList.add('has-error');
+        valid = false;
+      } else {
+        group.classList.remove('has-error');
+      }
+    });
+    // email format
+    const emailEl = document.getElementById('email');
+    if (emailEl.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value)) {
+      emailEl.closest('.field-group').classList.add('has-error');
+      valid = false;
+    }
+  }
+
+  return valid;
+}
+
+// ── COLLECT FORM DATA ─────────────────────────────────────────────────
+const NUMERIC_FIELDS = new Set([
+  'groesse','gewicht','bmi','oberarm','brust','taille','huefte','beine_po','oberschenkel',
+  'vo2max','grip_rechts','grip_links','sit_reach',
+  'jp_f_trizeps','jp_f_huefte','jp_f_oberschenkel','jp_f_ergebnis',
+  'jp_m_brust','jp_m_abdomen','jp_m_oberschenkel','jp_m_ergebnis'
+]);
+
+function collectData() {
+  const data = {};
+  const form = document.getElementById('mainForm');
+
+  // Text / number / select / textarea inputs
+  form.querySelectorAll('input:not([type=radio]):not([type=checkbox]):not([type=range]), select, textarea').forEach(el => {
+    if (!el.name) return;
+    if (el.id === 'bmi_display') return;
+
+    let val = el.value.trim();
+
+    // J&P Ergebnisfelder: "18.5 %" → 18.5, leer → null
+    if (el.id === 'jp_f_ergebnis' || el.id === 'jp_m_ergebnis') {
+      const num = parseFloat(val.replace('%','').trim());
+      data[el.name] = isNaN(num) ? null : num;
+      return;
+    }
+
+    // Numerische Felder: string → float oder null
+    if (NUMERIC_FIELDS.has(el.name)) {
+      const num = parseFloat(val);
+      data[el.name] = isNaN(num) ? null : num;
+      return;
+    }
+
+    data[el.name] = val || null;
+  });
+
+  // BMI
+  const bmi = document.getElementById('bmi_display').value;
+  data['bmi'] = bmi && bmi !== '—' ? parseFloat(bmi) : null;
+
+  // Radio buttons (single value)
+  form.querySelectorAll('input[type=radio]:checked').forEach(el => {
+    data[el.name] = el.value;
+  });
+
+  // Checkboxes (array)
+  const cbGroups = {};
+  form.querySelectorAll('input[type=checkbox]:checked').forEach(el => {
+    if (el.name) {
+      if (!cbGroups[el.name]) cbGroups[el.name] = [];
+      cbGroups[el.name].push(el.value);
+    }
+  });
+  Object.assign(data, cbGroups);
+
+  // Range sliders
+  form.querySelectorAll('input[type=range]').forEach(el => {
+    if (el.name) data[el.name] = parseInt(el.value);
+  });
+
+  // Timestamp
+  data['erstellt_am'] = new Date().toISOString();
+
+  return data;
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────────────
+async function submitForm() {
+  // Datenschutz check
+  const ds = document.getElementById('datenschutz');
+  const dsErr = document.getElementById('datenschutz_error');
+  if (!ds.checked) {
+    dsErr.style.display = 'block';
+    return;
+  }
+  dsErr.style.display = 'none';
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner"></span> Wird gesendet…`;
+
+  const payload = collectData();
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err);
+    }
+
+    // Show success
+    document.getElementById('mainForm').style.display = 'none';
+    document.getElementById('successScreen').classList.add('visible');
+    document.getElementById('progressSteps').style.display = 'none';
+
+  } catch (err) {
+    console.error('Supabase error:', err);
+    btn.disabled = false;
+    btn.innerHTML = `Absenden <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>`;
+    alert('Fehler beim Senden. Bitte versuche es erneut oder kontaktiere Marcel direkt.');
+  }
+}
+
+// ── JACKSON & POLLOCK 3-FALTEN FORMEL ─────────────────────────────────
+function calcJP() {
+  // Alter aus Geburtsdatum
+  const geb = document.getElementById('geburtsdatum').value;
+  const alter = geb ? Math.floor((new Date() - new Date(geb)) / (365.25 * 24 * 60 * 60 * 1000)) : null;
+
+  // ── Frau: Trizeps + Hüfte + Oberschenkel ──
+  const fT = parseFloat(document.getElementById('jp_f_trizeps')?.value);
+  const fH = parseFloat(document.getElementById('jp_f_huefte')?.value);
+  const fO = parseFloat(document.getElementById('jp_f_oberschenkel')?.value);
+
+  if (fT > 0 && fH > 0 && fO > 0 && alter) {
+    const sum = fT + fH + fO;
+    const dichte = 1.0994921 - (0.0009929 * sum) + (0.0000023 * sum * sum) - (0.0001392 * alter);
+    const kf = ((495 / dichte) - 450).toFixed(1);
+    document.getElementById('jp_f_ergebnis').value = kf + ' %';
+  } else {
+    document.getElementById('jp_f_ergebnis').value = '';
+  }
+
+  // ── Mann: Brust + Abdomen + Oberschenkel ──
+  const mB = parseFloat(document.getElementById('jp_m_brust')?.value);
+  const mA = parseFloat(document.getElementById('jp_m_abdomen')?.value);
+  const mO = parseFloat(document.getElementById('jp_m_oberschenkel')?.value);
+
+  if (mB > 0 && mA > 0 && mO > 0 && alter) {
+    const sum = mB + mA + mO;
+    const dichte = 1.1093800 - (0.0008267 * sum) + (0.0000016 * sum * sum) - (0.0002574 * alter);
+    const kf = ((495 / dichte) - 450).toFixed(1);
+    document.getElementById('jp_m_ergebnis').value = kf + ' %';
+  } else {
+    document.getElementById('jp_m_ergebnis').value = '';
+  }
+}
+
+// JP + birthdate listeners set in DOMContentLoaded
+
+
+
+
+</script>
+
+</body>
+</html>
