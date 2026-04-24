@@ -330,7 +330,8 @@ async function loadClients() {
       `${SUPABASE_URL}/rest/v1/${TABLE}?select=*&order=erstellt_am.desc`,
       { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
     );
-    allClients = await res.json();
+    const json = await res.json();
+allClients = Array.isArray(json) ? json : [];
     document.getElementById('statChip').textContent = `${allClients.length} Client${allClients.length !== 1 ? 's' : ''}`;
     renderList(allClients);
   } catch(e) {
