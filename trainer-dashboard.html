@@ -4,661 +4,315 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trainer Dashboard – Marcel Jurado</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy:  #080821;
-  --navy2: #0d1535;
-  --navy3: #1a2550;
-  --teal:  #4fd1c5;
-  --teal2: #38b2ac;
-  --cream: #faf8f5;
-  --text:  #ccd6f6;
-  --muted: #8892b0;
-  --white: #ffffff;
-  --error: #ff6b6b;
-  --green: #68d391;
-  --r: 4px;
-  --t: 0.22s ease;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root { --navy:#080821; --teal:#4fd1c5; --text:#ccd6f6; --muted:#8892b0; --white:#fff; --error:#ff6b6b; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+#loginScreen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--navy);z-index:100}
+#appScreen{display:none}
+.login-box{width:360px;padding:48px 40px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;text-align:center}
+.logo{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--teal);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--teal);margin:0 auto 24px}
+h1{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--white);margin-bottom:6px}
+.sub{font-size:12px;color:var(--muted);margin-bottom:32px;letter-spacing:0.05em}
+label{display:block;font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);text-align:left;margin-bottom:6px}
+input[type=password]{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;padding:12px 16px;outline:none;margin-bottom:16px}
+.btn-login{width:100%;padding:13px;background:var(--teal);color:#080821;border:none;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer}
+.err{color:var(--error);font-size:12px;margin-bottom:12px;display:none}
 
-body {
-  background: var(--navy);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
-  min-height: 100vh;
-}
+/* APP */
+header{padding:20px 40px;border-bottom:1px solid rgba(79,209,197,0.1);display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,33,0.95)}
+.h-logo{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--teal);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:12px;color:var(--teal);font-weight:600}
+.h-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--white);margin-left:12px}
+.chip{background:rgba(79,209,197,0.08);border:1px solid rgba(79,209,197,0.2);border-radius:20px;padding:5px 14px;font-size:11px;color:var(--teal)}
+.btn-out{background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:7px 14px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-left:12px}
 
-body::before {
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(ellipse 70% 50% at 15% 0%, rgba(79,209,197,0.07) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 85% 100%, rgba(79,209,197,0.04) 0%, transparent 50%);
-}
+.main{display:grid;grid-template-columns:320px 1fr;min-height:calc(100vh - 65px)}
+.sidebar{border-right:1px solid rgba(255,255,255,0.06);overflow-y:auto}
+.sidebar-hdr{padding:20px 24px 16px;border-bottom:1px solid rgba(255,255,255,0.05)}
+.sidebar-title{font-size:11px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal)}
+.client{padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer}
+.client:hover{background:rgba(255,255,255,0.03)}
+.client.active{background:rgba(79,209,197,0.07);border-left:2px solid var(--teal)}
+.client-name{font-size:14px;color:var(--white);margin-bottom:3px}
+.client-date{font-size:11px;color:var(--muted)}
+.client-goal{font-size:10px;background:rgba(79,209,197,0.1);color:var(--teal);padding:2px 8px;border-radius:10px;margin-left:8px}
+.empty{padding:40px 24px;text-align:center;color:var(--muted);font-size:13px}
 
-/* ── LOGIN ── */
-.login-wrap {
-  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:100;
-  background:var(--navy);
-}
-.login-box {
-  width:100%;max-width:380px;padding:48px 40px;
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:8px;
-  position:relative;z-index:1;
-}
-.login-logo {
-  width:48px;height:48px;border-radius:50%;border:1.5px solid var(--teal);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;
-  color:var(--teal);margin:0 auto 24px;
-}
-.login-title {
-  font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;
-  color:var(--white);text-align:center;margin-bottom:6px;
-}
-.login-sub { font-size:12px;color:var(--muted);text-align:center;margin-bottom:32px;letter-spacing:0.05em; }
-.login-field { display:flex;flex-direction:column;gap:6px;margin-bottom:20px; }
-.login-field label { font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted); }
-.login-field input {
-  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
-  border-radius:var(--r);color:var(--white);font-family:'DM Sans',sans-serif;
-  font-size:14px;padding:12px 16px;outline:none;transition:all var(--t);
-}
-.login-field input:focus { border-color:rgba(79,209,197,0.5);background:rgba(79,209,197,0.04); }
-.login-err { font-size:11px;color:var(--error);margin-top:-12px;margin-bottom:8px;display:none; }
-.btn-login {
-  width:100%;padding:13px;background:var(--teal);color:var(--navy);
-  border:none;border-radius:var(--r);font-family:'DM Sans',sans-serif;
-  font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;
-  cursor:pointer;transition:all var(--t);
-}
-.btn-login:hover { background:#5de0d4;box-shadow:0 4px 20px rgba(79,209,197,0.35); }
+.detail{padding:32px 40px;overflow-y:auto}
+.detail-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--muted);gap:12px;min-height:400px;font-size:13px}
 
-/* ── APP SHELL ── */
-.app { display:none;min-height:100vh;position:relative;z-index:1; }
-.app.visible { display:block; }
+.d-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.d-name{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--white)}
+.d-info{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.8}
+.btn-pdf{display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#080821;border:none;border-radius:4px;padding:12px 22px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer}
 
-header {
-  padding:20px 40px;border-bottom:1px solid rgba(79,209,197,0.1);
-  display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;background:rgba(8,8,33,0.95);
-  backdrop-filter:blur(12px);z-index:50;
-}
-.header-left { display:flex;align-items:center;gap:14px; }
-.h-logo {
-  width:36px;height:36px;border-radius:50%;border:1.5px solid var(--teal);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Cormorant Garamond',serif;font-size:12px;color:var(--teal);font-weight:600;
-}
-.h-title { font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;color:var(--white); }
-.h-title span { display:block;font-size:10px;font-weight:300;color:var(--muted);letter-spacing:0.15em;font-family:'DM Sans',sans-serif; }
-.header-right { display:flex;align-items:center;gap:16px; }
-.stat-chip {
-  background:rgba(79,209,197,0.08);border:1px solid rgba(79,209,197,0.2);
-  border-radius:20px;padding:5px 14px;font-size:11px;color:var(--teal);
-  letter-spacing:0.08em;
-}
-.btn-logout {
-  background:transparent;border:1px solid rgba(255,255,255,0.1);
-  border-radius:var(--r);padding:7px 14px;color:var(--muted);
-  font-family:'DM Sans',sans-serif;font-size:11px;font-weight:400;
-  letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all var(--t);
-}
-.btn-logout:hover { border-color:rgba(255,255,255,0.25);color:var(--text); }
-
-/* ── MAIN LAYOUT ── */
-.main { display:grid;grid-template-columns:340px 1fr;min-height:calc(100vh - 65px); }
-
-/* ── CLIENT LIST ── */
-.sidebar {
-  border-right:1px solid rgba(255,255,255,0.06);
-  overflow-y:auto;max-height:calc(100vh - 65px);
-  position:sticky;top:65px;
-}
-.sidebar-header {
-  padding:20px 24px 16px;border-bottom:1px solid rgba(255,255,255,0.05);
-  position:sticky;top:0;background:var(--navy);z-index:10;
-}
-.sidebar-title { font-size:11px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal); }
-.search-wrap { margin-top:12px;position:relative; }
-.search-wrap input {
-  width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
-  border-radius:var(--r);color:var(--text);font-family:'DM Sans',sans-serif;
-  font-size:13px;padding:9px 14px 9px 36px;outline:none;transition:all var(--t);
-}
-.search-wrap input:focus { border-color:rgba(79,209,197,0.4); }
-.search-wrap svg { position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted); }
-
-.client-item {
-  padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.04);
-  cursor:pointer;transition:background var(--t);
-}
-.client-item:hover { background:rgba(255,255,255,0.03); }
-.client-item.active { background:rgba(79,209,197,0.07);border-left:2px solid var(--teal); }
-.client-name { font-size:14px;font-weight:400;color:var(--white);margin-bottom:3px; }
-.client-meta { display:flex;gap:10px;align-items:center; }
-.client-date { font-size:11px;color:var(--muted); }
-.client-goal {
-  font-size:10px;background:rgba(79,209,197,0.1);color:var(--teal);
-  padding:2px 8px;border-radius:10px;letter-spacing:0.06em;
-}
-.empty-list { padding:40px 24px;text-align:center;color:var(--muted);font-size:13px; }
-
-/* ── DETAIL PANEL ── */
-.detail { padding:32px 40px;overflow-y:auto;max-height:calc(100vh - 65px); }
-.detail-empty {
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  height:100%;color:var(--muted);gap:12px;min-height:400px;
-}
-.detail-empty svg { opacity:0.2; }
-.detail-empty p { font-size:13px;letter-spacing:0.05em; }
-
-.detail-header {
-  display:flex;align-items:flex-start;justify-content:space-between;
-  margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.07);
-}
-.detail-name { font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--white); }
-.detail-info { font-size:12px;color:var(--muted);margin-top:4px;line-height:1.8; }
-.btn-pdf {
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--teal);color:var(--navy);border:none;border-radius:var(--r);
-  padding:12px 22px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;
-  letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all var(--t);
-  white-space:nowrap;
-}
-.btn-pdf:hover { background:#5de0d4;box-shadow:0 4px 16px rgba(79,209,197,0.35);transform:translateY(-1px); }
-
-/* ── SECTIONS ── */
-.d-section { margin-bottom:28px; }
-.d-section-title {
-  font-size:10px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;
-  color:var(--teal);margin-bottom:14px;padding-bottom:8px;
-  border-bottom:1px solid rgba(79,209,197,0.15);
-}
-.d-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:14px 20px; }
-.d-grid-2 { display:grid;grid-template-columns:1fr 1fr;gap:14px 20px; }
-.d-field { display:flex;flex-direction:column;gap:4px; }
-.d-label { font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted); }
-.d-value { font-size:13px;color:var(--white); }
-.d-value.empty { color:rgba(136,146,176,0.3);font-style:italic; }
-.d-full { grid-column:1/-1; }
-
-.tags { display:flex;flex-wrap:wrap;gap:6px;margin-top:2px; }
-.tag {
-  background:rgba(79,209,197,0.08);border:1px solid rgba(79,209,197,0.2);
-  border-radius:10px;padding:3px 10px;font-size:11px;color:var(--teal);
-}
-.tag.red { background:rgba(255,107,107,0.08);border-color:rgba(255,107,107,0.25);color:#ff9a9a; }
-
-.scale-row { display:flex;align-items:center;gap:10px; }
-.scale-track { flex:1;height:3px;background:rgba(255,255,255,0.08);border-radius:2px; }
-.scale-fill  { height:100%;background:var(--teal);border-radius:2px;transition:width 0.5s ease; }
-.scale-num   { font-size:13px;font-weight:500;color:var(--teal);min-width:24px;text-align:right; }
-
-.parq-alert {
-  background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.25);
-  border-radius:var(--r);padding:12px 16px;font-size:12px;color:#ffaaaa;
-  margin-bottom:16px;
-}
-
-.jp-cols { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
-.jp-box {
-  background:rgba(79,209,197,0.04);border:1px solid rgba(79,209,197,0.15);
-  border-radius:var(--r);padding:16px;
-}
-.jp-box-title { font-size:10px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal);margin-bottom:12px; }
-.jp-result {
-  font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:400;
-  color:var(--teal);margin-top:10px;
-}
-
-/* ── LOADING ── */
-.loading { padding:60px;text-align:center;color:var(--muted); }
-.spinner-lg {
-  width:28px;height:28px;border:2px solid rgba(79,209,197,0.2);
-  border-top-color:var(--teal);border-radius:50%;
-  animation:spin 0.7s linear infinite;margin:0 auto 16px;
-}
-@keyframes spin { to { transform:rotate(360deg); } }
-
-@media(max-width:900px){
-  .main { grid-template-columns:1fr; }
-  .sidebar { max-height:300px;position:relative;top:0; }
-  .detail { padding:24px 20px; }
-  header { padding:16px 20px; }
-}
+.sec{margin-bottom:24px}
+.sec-title{font-size:10px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid rgba(79,209,197,0.15)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px}
+.field{display:flex;flex-direction:column;gap:3px}
+.fl{font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
+.fv{font-size:13px;color:var(--white)}
+.fv.empty{color:rgba(136,146,176,0.3);font-style:italic}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tag{background:rgba(79,209,197,0.08);border:1px solid rgba(79,209,197,0.2);border-radius:10px;padding:3px 10px;font-size:11px;color:var(--teal)}
+.alert{background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.25);border-radius:4px;padding:12px 16px;font-size:12px;color:#ffaaaa;margin-bottom:16px}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div class="login-wrap" id="loginWrap">
+<div id="loginScreen">
   <div class="login-box">
-    <div class="login-logo">MJ</div>
-    <h2 class="login-title">Trainer Dashboard</h2>
-    <p class="login-sub">Marcel Jurado Personal Training</p>
-    <div class="login-field">
-      <label>Passwort</label>
-      <input type="password" id="pwInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <div class="login-err" id="loginErr">Falsches Passwort</div>
-    <button class="btn-login" onclick="doLogin()">Einloggen</button>
+    <div class="logo">MJ</div>
+    <h1>Trainer Dashboard</h1>
+    <p class="sub">Marcel Jurado Personal Training</p>
+    <label>Passwort</label>
+    <input type="password" id="pw" placeholder="••••••••">
+    <div class="err" id="err">Falsches Passwort</div>
+    <button class="btn-login" onclick="login()">Einloggen</button>
   </div>
 </div>
 
-<!-- APP -->
-<div class="app" id="app">
-
+<div id="appScreen">
   <header>
-    <div class="header-left">
+    <div style="display:flex;align-items:center">
       <div class="h-logo">MJ</div>
-      <div class="h-title">
-        Dashboard
-        <span>Marcel Jurado Personal Training</span>
-      </div>
+      <div class="h-title" style="margin-left:12px">Dashboard</div>
     </div>
-    <div class="header-right">
-      <div class="stat-chip" id="statChip">0 Clients</div>
-      <button class="btn-logout" onclick="logout()">Logout</button>
+    <div style="display:flex;align-items:center">
+      <div class="chip" id="chip">0 Clients</div>
+      <button class="btn-out" onclick="logout()">Logout</button>
     </div>
   </header>
-
   <div class="main">
-
-    <!-- SIDEBAR -->
     <div class="sidebar">
-      <div class="sidebar-header">
-        <div class="sidebar-title">Eingegangene Bögen</div>
-        <div class="search-wrap">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
-          <input type="text" id="searchInput" placeholder="Name suchen…" oninput="filterClients()">
-        </div>
-      </div>
-      <div id="clientList"><div class="loading"><div class="spinner-lg"></div>Lade Daten…</div></div>
+      <div class="sidebar-hdr"><div class="sidebar-title">Eingegangene Bögen</div></div>
+      <div id="list"><div class="empty">Lade...</div></div>
     </div>
-
-    <!-- DETAIL -->
-    <div class="detail" id="detailPanel">
-      <div class="detail-empty">
-        <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        <p>Client aus der Liste wählen</p>
-      </div>
+    <div class="detail" id="detail">
+      <div class="detail-empty"><p>Client aus der Liste wählen</p></div>
     </div>
-
   </div>
 </div>
 
 <script>
-// ── CONFIG ────────────────────────────────────────────────────────────
-const SUPABASE_URL = 'https://llqftswzsvjhfolvpfqy.supabase.co'; // ← anpassen
-const SUPABASE_KEY = 'sb_publishable_1PTHhbrNvSOmrHYn3bJHxg_CUfrITJH';                 // ← anpassen
-const TABLE       = 'anamneseboegen';
-const DASHBOARD_PW = 'MJ2024trainer';                        // ← Passwort ändern!
+var SURL = 'https://llqftswzsvjhfolvpfqy.supabase.co';
+var SKEY = 'sb_publishable_1PTHhbrNvSOmrHYn3bJHxg_CUfrITJH';
+var PW   = 'MJ2024trainer';
+var data = [];
+var activeId = null;
 
-// ── STATE ─────────────────────────────────────────────────────────────
-let allClients = [];
-let activeId   = null;
+document.getElementById('pw').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') login();
+});
 
-// ── LOGIN ─────────────────────────────────────────────────────────────
-function doLogin() {
-  const pw = document.getElementById('pwInput').value;
-  if (pw === DASHBOARD_PW) {
-    document.getElementById('loginWrap').style.display = 'none';
-    document.getElementById('app').classList.add('visible');
-    loadClients();
+function login() {
+  if (document.getElementById('pw').value === PW) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appScreen').style.display = 'block';
+    load();
   } else {
-    document.getElementById('loginErr').style.display = 'block';
-    document.getElementById('pwInput').value = '';
+    document.getElementById('err').style.display = 'block';
+    document.getElementById('pw').value = '';
   }
 }
 
 function logout() {
-  document.getElementById('loginWrap').style.display = 'flex';
-  document.getElementById('app').classList.remove('visible');
-  document.getElementById('pwInput').value = '';
-  allClients = []; activeId = null;
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('appScreen').style.display = 'none';
+  document.getElementById('pw').value = '';
+  data = []; activeId = null;
 }
 
-// ── LOAD DATA ─────────────────────────────────────────────────────────
-async function loadClients() {
-  try {
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/${TABLE}?select=*&order=erstellt_am.desc`,
-      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
-    );
-   const json = await res.json();
-allClients = Array.isArray(json) ? json : [];
-document.getElementById('statChip').textContent = `${allClients.length} Client${allClients.length !== 1 ? 's' : ''}`;
-renderList(allClients);
-    renderList(allClients);
-  } catch(e) {
-    document.getElementById('clientList').innerHTML = '<div class="empty-list">Fehler beim Laden der Daten.</div>';
-  }
+function load() {
+  document.getElementById('list').innerHTML = '<div class="empty">Lade...</div>';
+  fetch(SURL + '/rest/v1/anamneseboegen?select=*&order=erstellt_am.desc', {
+    headers: { 'apikey': SKEY, 'Authorization': 'Bearer ' + SKEY }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(json) {
+    data = Array.isArray(json) ? json : [];
+    document.getElementById('chip').textContent = data.length + ' Client' + (data.length !== 1 ? 's' : '');
+    renderList();
+  })
+  .catch(function(e) {
+    document.getElementById('list').innerHTML = '<div class="empty">Fehler: ' + e.message + '</div>';
+  });
 }
 
-// ── RENDER LIST ───────────────────────────────────────────────────────
-function renderList(clients) {
-  const el = document.getElementById('clientList');
-  if (!clients.length) {
-    el.innerHTML = '<div class="empty-list">Noch keine Einreichungen.</div>';
-    return;
-  }
-  el.innerHTML = clients.map(c => `
-    <div class="client-item ${c.id === activeId ? 'active' : ''}" onclick="showClient('${c.id}')">
-      <div class="client-name">${c.vorname || ''} ${c.nachname || ''}</div>
-      <div class="client-meta">
-        <span class="client-date">${fmtDate(c.erstellt_am)}</span>
-        ${c.hauptziel ? `<span class="client-goal">${c.hauptziel}</span>` : ''}
-      </div>
-    </div>
-  `).join('');
+function renderList() {
+  var el = document.getElementById('list');
+  if (!data.length) { el.innerHTML = '<div class="empty">Noch keine Einreichungen.</div>'; return; }
+  el.innerHTML = data.map(function(c) {
+    var d = c.erstellt_am ? new Date(c.erstellt_am).toLocaleDateString('de-DE') : '';
+    return '<div class="client' + (c.id === activeId ? ' active' : '') + '" onclick="show(\'' + c.id + '\')">' +
+      '<div class="client-name">' + (c.vorname||'') + ' ' + (c.nachname||'') + '</div>' +
+      '<div style="display:flex;align-items:center"><span class="client-date">' + d + '</span>' +
+      (c.hauptziel ? '<span class="client-goal">' + c.hauptziel + '</span>' : '') + '</div>' +
+      '</div>';
+  }).join('');
 }
 
-function filterClients() {
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  renderList(allClients.filter(c =>
-    `${c.vorname} ${c.nachname}`.toLowerCase().includes(q)
-  ));
+function f(label, value) {
+  var v = (value !== null && value !== undefined && value !== '') ? value : null;
+  return '<div class="field"><div class="fl">' + label + '</div><div class="fv' + (v ? '' : ' empty') + '">' + (v || '—') + '</div></div>';
 }
 
-// ── SHOW CLIENT ───────────────────────────────────────────────────────
-function showClient(id) {
+function show(id) {
   activeId = id;
-  renderList(document.getElementById('searchInput').value ?
-    allClients.filter(c => `${c.vorname} ${c.nachname}`.toLowerCase().includes(document.getElementById('searchInput').value.toLowerCase())) :
-    allClients
-  );
-  const d = allClients.find(c => c.id === id);
-  if (!d) return;
+  renderList();
+  var c = data.find(function(x) { return x.id === id; });
+  if (!c) return;
 
-  const parqRisk = ['parq_herz','parq_brust','parq_blutdruck'].some(k => d[k] === 'ja') ||
-    (d.parq_diabetes && d.parq_diabetes !== 'nein');
+  var parqRisk = c.parq_herz === 'ja' || c.parq_brust === 'ja' || c.parq_blutdruck === 'ja' || (c.parq_diabetes && c.parq_diabetes !== 'nein');
+  var geb = c.geburtsdatum ? new Date(c.geburtsdatum).toLocaleDateString('de-DE') : '—';
 
-  document.getElementById('detailPanel').innerHTML = `
-    <div class="detail-header">
-      <div>
-        <div class="detail-name">${d.vorname || ''} ${d.nachname || ''}</div>
-        <div class="detail-info">
-          ${d.email || ''}${d.telefon ? ' · ' + d.telefon : ''}<br>
-          Eingegangen: ${fmtDate(d.erstellt_am)} · Beruf: ${d.beruf || '—'}
-        </div>
-      </div>
-      <button class="btn-pdf" onclick="generatePDF('${id}')">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-        PDF
-      </button>
-    </div>
+  var html = '<div class="d-header">' +
+    '<div><div class="d-name">' + (c.vorname||'') + ' ' + (c.nachname||'') + '</div>' +
+    '<div class="d-info">' + (c.email||'') + (c.telefon ? ' · ' + c.telefon : '') + '</div></div>' +
+    '<button class="btn-pdf" onclick="pdf(\'' + id + '\')">PDF</button></div>';
 
-    ${parqRisk ? `<div class="parq-alert">⚠ PAR-Q+ Risikofaktoren vorhanden — ärztliche Freigabe empfohlen</div>` : ''}
+  if (parqRisk) html += '<div class="alert">⚠ PAR-Q+ Risikofaktoren — ärztliche Freigabe empfohlen</div>';
 
-    <div class="d-section">
-      <div class="d-section-title">Körper</div>
-      <div class="d-grid">
-        ${dField('Größe', d.groesse ? d.groesse + ' cm' : null)}
-        ${dField('Gewicht', d.gewicht ? d.gewicht + ' kg' : null)}
-        ${dField('BMI', d.bmi)}
-        ${dField('Geburtsdatum', d.geburtsdatum ? fmtDateShort(d.geburtsdatum) : null)}
-        ${dField('Geschlecht', d.geschlecht)}
-        ${dField('Adresse', d.plz_ort)}
-      </div>
-    </div>
+  html += '<div class="sec"><div class="sec-title">Persönliche Daten</div><div class="grid3">' +
+    f('Geburtsdatum', geb) + f('Geschlecht', c.geschlecht) + f('Beruf', c.beruf) +
+    f('Adresse', c.adresse) + f('PLZ / Ort', c.plz_ort) + '</div></div>';
 
-    <div class="d-section">
-      <div class="d-section-title">Gesundheit & PAR-Q+</div>
-      <div class="d-grid">
-        ${dField('Herzerkrankung', d.parq_herz, d.parq_herz==='ja')}
-        ${dField('Brustschmerzen', d.parq_brust, d.parq_brust==='ja')}
-        ${dField('Bluthochdruck', d.parq_blutdruck, d.parq_blutdruck==='ja')}
-        ${dField('Diabetes', d.parq_diabetes, d.parq_diabetes && d.parq_diabetes!=='nein')}
-        ${dField('Medikamente', d.parq_medikamente, d.parq_medikamente==='ja')}
-        ${dField('Blutdruck', d.blutdruck)}
-      </div>
-      ${d.medikamente_list ? `<div class="d-field" style="margin-top:12px"><div class="d-label">Medikamentenliste</div><div class="d-value">${d.medikamente_list}</div></div>` : ''}
-      ${d.risiken && d.risiken.length ? `<div style="margin-top:12px"><div class="d-label" style="margin-bottom:6px">Risikofaktoren</div><div class="tags">${d.risiken.map(r=>`<span class="tag red">${r}</span>`).join('')}</div></div>` : ''}
-      ${d.verletzungen ? `<div class="d-field" style="margin-top:12px"><div class="d-label">Verletzungen</div><div class="d-value">${d.verletzungen}</div></div>` : ''}
-      ${d.ops ? `<div class="d-field" style="margin-top:8px"><div class="d-label">OPs</div><div class="d-value">${d.ops}</div></div>` : ''}
-    </div>
+  html += '<div class="sec"><div class="sec-title">Körper</div><div class="grid3">' +
+    f('Größe', c.groesse ? c.groesse + ' cm' : null) +
+    f('Gewicht', c.gewicht ? c.gewicht + ' kg' : null) +
+    f('BMI', c.bmi) +
+    f('Taille', c.taille ? c.taille + ' cm' : null) +
+    f('Hüfte', c.huefte ? c.huefte + ' cm' : null) +
+    f('Oberschenkel', c.oberschenkel ? c.oberschenkel + ' cm' : null) + '</div></div>';
 
-    ${d.hat_schmerzen === 'ja' ? `
-    <div class="d-section">
-      <div class="d-section-title">Schmerzen (NRS 0–10)</div>
-      <div class="d-grid">
-        ${scaleField('Nacken / HWS', d.schmerz_nacken)}
-        ${scaleField('Schulter', d.schmerz_schulter)}
-        ${scaleField('Rücken / LWS', d.schmerz_lws)}
-        ${scaleField('Hüfte / ISG', d.schmerz_huefte)}
-        ${scaleField('Knie', d.schmerz_knie)}
-        ${scaleField('Sprunggelenk', d.schmerz_sprunggelenk)}
-      </div>
-      <div class="d-grid-2" style="margin-top:12px">
-        ${dField('Dauer', d.schmerz_dauer)}
-        ${dField('Wann', Array.isArray(d.schmerz_wann) ? d.schmerz_wann.join(', ') : d.schmerz_wann)}
-        ${dField('Lindert', d.schmerz_lindert)}
-        ${dField('Verschlechtert', d.schmerz_verschlechtert)}
-      </div>
-      ${d.physio_vorher ? `<div class="d-field" style="margin-top:12px"><div class="d-label">Frühere Physio</div><div class="d-value">${d.physio_vorher}</div></div>` : ''}
-    </div>` : ''}
+  html += '<div class="sec"><div class="sec-title">Gesundheit</div><div class="grid3">' +
+    f('Herzerkrankung', c.parq_herz) + f('Bluthochdruck', c.parq_blutdruck) +
+    f('Diabetes', c.parq_diabetes) + f('Medikamente', c.parq_medikamente) +
+    f('Blutdruck', c.blutdruck) + '</div>' +
+    (c.risiken && c.risiken.length ? '<div style="margin-top:10px"><div class="fl" style="margin-bottom:5px">Risiken</div><div class="tags">' + c.risiken.map(function(r){return '<span class="tag">'+r+'</span>';}).join('') + '</div></div>' : '') +
+    (c.verletzungen ? '<div style="margin-top:10px">' + f('Verletzungen', c.verletzungen) + '</div>' : '') + '</div>';
 
-    <div class="d-section">
-      <div class="d-section-title">Lifestyle</div>
-      <div class="d-grid">
-        ${dField('Schlaf', d.schlaf_stunden)}
-        ${scaleField('Schlafqualität', d.schlaf_qualitaet)}
-        ${scaleField('Stress', d.stress_level)}
-        ${scaleField('Energie', d.energie_level)}
-        ${dField('Sitzen / Tag', d.sitz_stunden)}
-        ${dField('Schritte / Tag', d.schritte_tag)}
-      </div>
-    </div>
+  html += '<div class="sec"><div class="sec-title">Lifestyle</div><div class="grid3">' +
+    f('Schlaf', c.schlaf_stunden) + f('Schlafqualität', c.schlaf_qualitaet ? c.schlaf_qualitaet + '/10' : null) +
+    f('Stress', c.stress_level ? c.stress_level + '/10' : null) +
+    f('Energie', c.energie_level ? c.energie_level + '/10' : null) +
+    f('Sitzen/Tag', c.sitz_stunden) + f('Schritte/Tag', c.schritte_tag) + '</div></div>';
 
-    <div class="d-section">
-      <div class="d-section-title">Training</div>
-      <div class="d-grid">
-        ${dField('Erfahrung', d.training_jahre)}
-        ${dField('Frequenz / Wo', d.training_frequenz)}
-        ${dField('Liegestütze', d.liegestuetze_max)}
-        ${dField('Plank Hold', d.plank_hold_sek ? d.plank_hold_sek + ' sek' : null)}
-        ${dField('Wall-Sit', d.wall_sit_sek ? d.wall_sit_sek + ' sek' : null)}
-        ${dField('1km Laufzeit', d.km_laufzeit)}
-      </div>
-      ${d.sportarten && d.sportarten.length ? `<div style="margin-top:12px"><div class="d-label" style="margin-bottom:6px">Sportarten</div><div class="tags">${d.sportarten.map(s=>`<span class="tag">${s}</span>`).join('')}</div></div>` : ''}
-      ${d.pt_erfahrung ? `<div class="d-field" style="margin-top:12px"><div class="d-label">PT-Erfahrung</div><div class="d-value">${d.pt_erfahrung}</div></div>` : ''}
-    </div>
+  html += '<div class="sec"><div class="sec-title">Training</div><div class="grid3">' +
+    f('Erfahrung', c.training_jahre) + f('Frequenz/Wo', c.training_frequenz) +
+    f('Liegestütze', c.liegestuetze_max) +
+    f('Plank Hold', c.plank_hold_sek ? c.plank_hold_sek + ' sek' : null) +
+    f('Wall-Sit', c.wall_sit_sek ? c.wall_sit_sek + ' sek' : null) +
+    f('1km Laufzeit', c.km_laufzeit) + '</div>' +
+    (c.sportarten && c.sportarten.length ? '<div style="margin-top:10px"><div class="fl" style="margin-bottom:5px">Sportarten</div><div class="tags">' + c.sportarten.map(function(s){return '<span class="tag">'+s+'</span>';}).join('') + '</div></div>' : '') + '</div>';
 
-    <div class="d-section">
-      <div class="d-section-title">Ernährung</div>
-      <div class="d-grid">
-        ${dField('Mahlzeiten / Tag', d.mahlzeiten_tag)}
-        ${dField('Wasser', d.wasser_konsum)}
-        ${dField('Alkohol', d.alkohol)}
-        ${dField('Koffein', d.koffein)}
-      </div>
-      ${d.ernaehrung_form && d.ernaehrung_form.length ? `<div style="margin-top:12px"><div class="d-label" style="margin-bottom:6px">Ernährungsform</div><div class="tags">${d.ernaehrung_form.map(e=>`<span class="tag">${e}</span>`).join('')}</div></div>` : ''}
-      ${d.supplements ? `<div class="d-field" style="margin-top:12px"><div class="d-label">Supplements</div><div class="d-value">${d.supplements}</div></div>` : ''}
-      ${d.unvertraeglichkeiten ? `<div class="d-field" style="margin-top:8px"><div class="d-label">Unverträglichkeiten</div><div class="d-value">${d.unvertraeglichkeiten}</div></div>` : ''}
-    </div>
+  html += '<div class="sec"><div class="sec-title">Ernährung</div><div class="grid3">' +
+    f('Mahlzeiten/Tag', c.mahlzeiten_tag) + f('Wasser', c.wasser_konsum) +
+    f('Alkohol', c.alkohol) + f('Koffein', c.koffein) +
+    f('Supplements', c.supplements) + f('Unverträglichkeiten', c.unvertraeglichkeiten) + '</div></div>';
 
-    <div class="d-section">
-      <div class="d-section-title">Longevity Baseline</div>
-      <div class="d-grid">
-        ${dField('VO₂max', d.vo2max ? d.vo2max + ' ml/kg/min' : null)}
-        ${dField('Grip rechts', d.grip_rechts ? d.grip_rechts + ' kg' : null)}
-        ${dField('Grip links', d.grip_links ? d.grip_links + ' kg' : null)}
-        ${dField('Balance rechts', d.balance_rechts ? d.balance_rechts + ' sek' : null)}
-        ${dField('Balance links', d.balance_links ? d.balance_links + ' sek' : null)}
-        ${dField('Sit & Reach', d.sit_reach ? d.sit_reach + ' cm' : null)}
-        ${dField('Chair Stand', d.chair_stand)}
-      </div>
-      <div class="jp-cols" style="margin-top:16px">
-        <div class="jp-box">
-          <div class="jp-box-title">J&P – Frau</div>
-          <div class="d-grid-2">
-            ${dField('Trizeps', d.jp_f_trizeps ? d.jp_f_trizeps + ' mm' : null)}
-            ${dField('Hüfte', d.jp_f_huefte ? d.jp_f_huefte + ' mm' : null)}
-            ${dField('Oberschenkel', d.jp_f_oberschenkel ? d.jp_f_oberschenkel + ' mm' : null)}
-          </div>
-          <div class="jp-result">${d.jp_f_ergebnis ? d.jp_f_ergebnis + ' %' : '—'}</div>
-          <div class="d-label">Körperfett</div>
-        </div>
-        <div class="jp-box">
-          <div class="jp-box-title">J&P – Mann</div>
-          <div class="d-grid-2">
-            ${dField('Brust', d.jp_m_brust ? d.jp_m_brust + ' mm' : null)}
-            ${dField('Abdomen', d.jp_m_abdomen ? d.jp_m_abdomen + ' mm' : null)}
-            ${dField('Oberschenkel', d.jp_m_oberschenkel ? d.jp_m_oberschenkel + ' mm' : null)}
-          </div>
-          <div class="jp-result">${d.jp_m_ergebnis ? d.jp_m_ergebnis + ' %' : '—'}</div>
-          <div class="d-label">Körperfett</div>
-        </div>
-      </div>
-    </div>
+  html += '<div class="sec"><div class="sec-title">Longevity Baseline</div><div class="grid3">' +
+    f('VO₂max', c.vo2max ? c.vo2max + ' ml/kg/min' : null) +
+    f('Grip rechts', c.grip_rechts ? c.grip_rechts + ' kg' : null) +
+    f('Grip links', c.grip_links ? c.grip_links + ' kg' : null) +
+    f('Balance rechts', c.balance_rechts ? c.balance_rechts + ' sek' : null) +
+    f('Balance links', c.balance_links ? c.balance_links + ' sek' : null) +
+    f('Chair Stand', c.chair_stand) + '</div>' +
+    '<div class="grid2" style="margin-top:14px">' +
+    '<div style="background:rgba(79,209,197,0.04);border:1px solid rgba(79,209,197,0.15);border-radius:4px;padding:14px"><div class="fl" style="margin-bottom:8px">J&P – Frau</div><div class="grid3">' +
+    f('Trizeps', c.jp_f_trizeps ? c.jp_f_trizeps + ' mm' : null) +
+    f('Hüfte', c.jp_f_huefte ? c.jp_f_huefte + ' mm' : null) +
+    f('Oberschenkel', c.jp_f_oberschenkel ? c.jp_f_oberschenkel + ' mm' : null) + '</div>' +
+    '<div style="font-family:Cormorant Garamond,serif;font-size:28px;color:var(--teal);margin-top:8px">' + (c.jp_f_ergebnis ? c.jp_f_ergebnis + ' %' : '—') + '</div></div>' +
+    '<div style="background:rgba(79,209,197,0.04);border:1px solid rgba(79,209,197,0.15);border-radius:4px;padding:14px"><div class="fl" style="margin-bottom:8px">J&P – Mann</div><div class="grid3">' +
+    f('Brust', c.jp_m_brust ? c.jp_m_brust + ' mm' : null) +
+    f('Abdomen', c.jp_m_abdomen ? c.jp_m_abdomen + ' mm' : null) +
+    f('Oberschenkel', c.jp_m_oberschenkel ? c.jp_m_oberschenkel + ' mm' : null) + '</div>' +
+    '<div style="font-family:Cormorant Garamond,serif;font-size:28px;color:var(--teal);margin-top:8px">' + (c.jp_m_ergebnis ? c.jp_m_ergebnis + ' %' : '—') + '</div></div>' +
+    '</div></div>';
 
-    <div class="d-section">
-      <div class="d-section-title">Ziele</div>
-      <div class="d-grid">
-        ${dField('Hauptziel', d.hauptziel)}
-        ${dField('Zeitbudget / Wo', d.zeitbudget)}
-      </div>
-      ${d.ziel_3monate ? `<div class="d-field" style="margin-top:12px"><div class="d-label">Ziel in 3 Monaten</div><div class="d-value">${d.ziel_3monate}</div></div>` : ''}
-      ${d.was_nicht_funktioniert ? `<div class="d-field" style="margin-top:8px"><div class="d-label">Bisherige Hindernisse</div><div class="d-value">${d.was_nicht_funktioniert}</div></div>` : ''}
-      ${d.training_pref && d.training_pref.length ? `<div style="margin-top:12px"><div class="d-label" style="margin-bottom:6px">Bevorzugtes Training</div><div class="tags">${d.training_pref.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>` : ''}
-      ${d.anmerkungen ? `<div class="d-field" style="margin-top:12px"><div class="d-label">Anmerkungen</div><div class="d-value">${d.anmerkungen}</div></div>` : ''}
-    </div>
-  `;
+  html += '<div class="sec"><div class="sec-title">Ziele</div><div class="grid2">' +
+    f('Hauptziel', c.hauptziel) + f('Zeitbudget/Wo', c.zeitbudget) + '</div>' +
+    (c.ziel_3monate ? '<div style="margin-top:10px">' + f('Ziel in 3 Monaten', c.ziel_3monate) + '</div>' : '') +
+    (c.anmerkungen ? '<div style="margin-top:10px">' + f('Anmerkungen', c.anmerkungen) + '</div>' : '') + '</div>';
+
+  document.getElementById('detail').innerHTML = html;
 }
 
-// ── HELPER RENDERERS ──────────────────────────────────────────────────
-function dField(label, value, isAlert = false) {
-  const v = (value !== null && value !== undefined && value !== '') ? value : null;
-  return `<div class="d-field">
-    <div class="d-label">${label}</div>
-    <div class="d-value${v ? (isAlert ? ' red' : '') : ' empty'}" style="${isAlert && v ? 'color:var(--error)' : ''}">${v || '—'}</div>
-  </div>`;
-}
+function pdf(id) {
+  var c = data.find(function(x) { return x.id === id; });
+  if (!c) return;
+  var datum = new Date().toLocaleDateString('de-DE');
 
-function scaleField(label, value) {
-  const v = (value !== null && value !== undefined) ? parseInt(value) : null;
-  const pct = v !== null ? (v / 10 * 100) : 0;
-  return `<div class="d-field">
-    <div class="d-label">${label}</div>
-    <div class="scale-row">
-      <div class="scale-track"><div class="scale-fill" style="width:${pct}%"></div></div>
-      <div class="scale-num">${v !== null ? v : '—'}</div>
-    </div>
-  </div>`;
-}
+  function fRow(label, value) {
+    var v = (value !== null && value !== undefined && value !== '') ? value : '—';
+    return '<tr><td style="font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:#888;padding:4px 8px 4px 0;width:35%">' + label + '</td><td style="font-size:11px;color:#1a1a2e;padding:4px 0;border-bottom:1px solid #f0f0f0">' + v + '</td></tr>';
+  }
 
-function fmtDate(iso) {
-  if (!iso) return '—';
-  return new Date(iso).toLocaleDateString('de-DE', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-}
-function fmtDateShort(iso) {
-  if (!iso) return '—';
-  return new Date(iso).toLocaleDateString('de-DE', {day:'2-digit',month:'2-digit',year:'numeric'});
-}
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Anamnesebogen ' + (c.vorname||'') + ' ' + (c.nachname||'') + '</title>' +
+    '<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Georgia,serif;color:#1a1a2e;padding:14mm 16mm;max-width:210mm}' +
+    'h2{font-size:9px;font-weight:bold;letter-spacing:0.2em;text-transform:uppercase;color:#4fd1c5;margin:16px 0 8px;padding-bottom:4px;border-bottom:1px solid #e8e8e8}' +
+    'table{width:100%;border-collapse:collapse}.hdr{display:flex;justify-content:space-between;border-bottom:2px solid #080821;padding-bottom:10px;margin-bottom:16px}' +
+    '.hdr h1{font-size:20px;font-weight:normal;color:#080821}.hdr p{font-size:10px;color:#666;margin-top:2px;text-transform:uppercase;letter-spacing:0.08em}' +
+    '.hdr-r{text-align:right;font-size:11px;color:#666;line-height:1.8}.hdr-r strong{color:#080821;font-size:13px}' +
+    '.tags{display:flex;flex-wrap:wrap;gap:3px}.tag{background:#f0fffe;border:1px solid #4fd1c5;border-radius:3px;padding:1px 6px;font-size:9px}' +
+    '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>' +
+    '<div class="hdr"><div><h1>Anamnesebogen</h1><p>Marcel Jurado Personal Training</p></div>' +
+    '<div class="hdr-r"><strong>' + (c.vorname||'') + ' ' + (c.nachname||'') + '</strong><br>' + (c.email||'') + (c.telefon?'<br>'+c.telefon:'') + '<br>Datum: ' + datum + '</div></div>' +
 
-// ── PDF ───────────────────────────────────────────────────────────────
-function generatePDF(id) {
-  const d = allClients.find(c => c.id === id);
-  if (!d) return;
-  const datum = new Date().toLocaleDateString('de-DE');
+    '<h2>Persönliche Daten</h2><table>' +
+    fRow('Geburtsdatum', c.geburtsdatum ? new Date(c.geburtsdatum).toLocaleDateString('de-DE') : null) +
+    fRow('Geschlecht', c.geschlecht) + fRow('Beruf', c.beruf) + fRow('Adresse', c.adresse) + fRow('PLZ / Ort', c.plz_ort) + '</table>' +
 
-  const f = (label, value) => {
-    const v = (value !== null && value !== undefined && value !== '') ? value : null;
-    return `<div class="field"><div class="fl">${label}</div><div class="fv${v?'':' e'}">${v||'—'}</div></div>`;
-  };
-  const sf = (label, value, max=10) => {
-    const v = value !== null && value !== undefined ? parseInt(value) : null;
-    const pct = v !== null ? (v/max*100) : 0;
-    return `<div class="field"><div class="fl">${label}</div><div class="sb"><div class="st"><div class="sf" style="width:${pct}%"></div></div><div class="sn">${v!==null?v:'—'}</div></div></div>`;
-  };
+    '<h2>Körpermessungen</h2><table>' +
+    fRow('Größe', c.groesse ? c.groesse + ' cm' : null) + fRow('Gewicht', c.gewicht ? c.gewicht + ' kg' : null) + fRow('BMI', c.bmi) +
+    fRow('Taille', c.taille ? c.taille + ' cm' : null) + fRow('Hüfte', c.huefte ? c.huefte + ' cm' : null) + '</table>' +
 
-  const html = `<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">
-<title>Anamnesebogen – ${d.vorname} ${d.nachname}</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Georgia,serif;color:#1a1a2e;background:#fff;padding:0}
-.page{max-width:210mm;margin:0 auto;padding:14mm 16mm}
-.hdr{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:10px;border-bottom:2px solid #080821;margin-bottom:20px}
-.hdr h1{font-size:20px;font-weight:normal;color:#080821;letter-spacing:0.03em}
-.hdr p{font-size:10px;color:#666;margin-top:2px;letter-spacing:0.08em;text-transform:uppercase}
-.hdr-r{text-align:right;font-size:11px;color:#666;line-height:1.8}
-.hdr-r strong{color:#080821;font-size:13px}
-.sec{margin-bottom:18px;break-inside:avoid}
-.st{font-size:9px;font-weight:bold;letter-spacing:0.2em;text-transform:uppercase;color:#4fd1c5;border-bottom:1px solid #e8e8e8;padding-bottom:4px;margin-bottom:10px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px 18px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:7px 18px}
-.field{display:flex;flex-direction:column;gap:2px}
-.fl{font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:#888}
-.fv{font-size:11px;color:#1a1a2e;border-bottom:1px solid #eee;padding-bottom:2px;min-height:16px}
-.fv.e{color:#ccc;font-style:italic}
-.tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px}
-.tag{background:#f0fffe;border:1px solid #4fd1c5;border-radius:3px;padding:1px 6px;font-size:9px;color:#0a192f}
-.sb{display:flex;align-items:center;gap:6px}
-.st-bar{flex:1;height:3px;background:#eee;border-radius:2px}
-.sf{height:100%;background:#4fd1c5;border-radius:2px}
-.sn{font-size:11px;font-weight:bold;color:#0a192f;min-width:16px}
-.jp-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
-.jp-box{background:#f8fffe;border:1px solid #e0f7f5;border-radius:3px;padding:8px 12px}
-.jp-t{font-size:9px;font-weight:bold;letter-spacing:0.15em;text-transform:uppercase;color:#4fd1c5;margin-bottom:8px}
-.jp-r{font-size:22px;font-family:Georgia,serif;color:#080821;margin-top:6px}
-.ftr{margin-top:24px;padding-top:8px;border-top:1px solid #eee;font-size:9px;color:#aaa;display:flex;justify-content:space-between}
-@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.page{padding:10mm 12mm}}
-</style></head><body><div class="page">
-<div class="hdr">
-  <div><h1>Anamnesebogen</h1><p>Marcel Jurado Personal Training · Physiotherapie</p></div>
-  <div class="hdr-r"><strong>${d.vorname} ${d.nachname}</strong><br>${d.email||''}${d.telefon?'<br>'+d.telefon:''}<br>Datum: ${datum}</div>
-</div>
+    '<h2>Gesundheit & PAR-Q+</h2><table>' +
+    fRow('Herzerkrankung', c.parq_herz) + fRow('Bluthochdruck', c.parq_blutdruck) +
+    fRow('Diabetes', c.parq_diabetes) + fRow('Medikamente', c.parq_medikamente) +
+    fRow('Blutdruck', c.blutdruck) + fRow('Verletzungen', c.verletzungen) + fRow('OPs', c.ops) + '</table>' +
+    (c.risiken && c.risiken.length ? '<div style="margin-top:8px"><div style="font-size:9px;text-transform:uppercase;color:#888;margin-bottom:4px">Risiken</div><div class="tags">' + c.risiken.map(function(r){return '<span class="tag">'+r+'</span>';}).join('') + '</div></div>' : '') +
 
-<div class="sec"><div class="st">Persönliche Daten</div>
-<div class="g3">${f('Geburtsdatum',d.geburtsdatum?fmtDateShort(d.geburtsdatum):null)}${f('Geschlecht',d.geschlecht)}${f('Beruf',d.beruf)}${f('Adresse',d.adresse)}${f('PLZ / Ort',d.plz_ort)}</div></div>
+    '<h2>Lifestyle</h2><table>' +
+    fRow('Schlaf', c.schlaf_stunden) + fRow('Schlafqualität', c.schlaf_qualitaet ? c.schlaf_qualitaet + '/10' : null) +
+    fRow('Stress', c.stress_level ? c.stress_level + '/10' : null) + fRow('Energie', c.energie_level ? c.energie_level + '/10' : null) +
+    fRow('Sitzen/Tag', c.sitz_stunden) + '</table>' +
 
-<div class="sec"><div class="st">Körpermessungen</div>
-<div class="g3">${f('Größe',d.groesse?d.groesse+' cm':null)}${f('Gewicht',d.gewicht?d.gewicht+' kg':null)}${f('BMI',d.bmi)}${f('Oberarm',d.oberarm?d.oberarm+' cm':null)}${f('Brust',d.brust?d.brust+' cm':null)}${f('Taille',d.taille?d.taille+' cm':null)}${f('Hüfte',d.huefte?d.huefte+' cm':null)}${f('Beine/Po',d.beine_po?d.beine_po+' cm':null)}${f('Oberschenkel',d.oberschenkel?d.oberschenkel+' cm':null)}</div></div>
+    '<h2>Training</h2><table>' +
+    fRow('Erfahrung', c.training_jahre) + fRow('Frequenz/Wo', c.training_frequenz) +
+    fRow('Liegestütze', c.liegestuetze_max) + fRow('Plank Hold', c.plank_hold_sek ? c.plank_hold_sek + ' sek' : null) +
+    fRow('1km Laufzeit', c.km_laufzeit) + '</table>' +
+    (c.sportarten && c.sportarten.length ? '<div style="margin-top:8px"><div class="tags">' + c.sportarten.map(function(s){return '<span class="tag">'+s+'</span>';}).join('') + '</div></div>' : '') +
 
-<div class="sec"><div class="st">Gesundheit & PAR-Q+</div>
-<div class="g3">${f('Herzerkrankung',d.parq_herz)}${f('Brustschmerzen',d.parq_brust)}${f('Bluthochdruck',d.parq_blutdruck)}${f('Diabetes',d.parq_diabetes)}${f('Medikamente',d.parq_medikamente)}${f('Blutdruck',d.blutdruck)}</div>
-${d.risiken&&d.risiken.length?`<div style="margin-top:8px"><div class="fl" style="margin-bottom:3px">Risiken</div><div class="tags">${d.risiken.map(r=>`<span class="tag">${r}</span>`).join('')}</div></div>`:''}
-${d.verletzungen?`<div style="margin-top:6px">${f('Verletzungen',d.verletzungen)}</div>`:''}
-${d.ops?`<div style="margin-top:4px">${f('OPs',d.ops)}</div>`:''}</div>
+    '<h2>Ernährung</h2><table>' +
+    fRow('Mahlzeiten/Tag', c.mahlzeiten_tag) + fRow('Wasser', c.wasser_konsum) +
+    fRow('Alkohol', c.alkohol) + fRow('Supplements', c.supplements) + fRow('Unverträglichkeiten', c.unvertraeglichkeiten) + '</table>' +
 
-${d.hat_schmerzen==='ja'?`<div class="sec"><div class="st">Schmerzen</div><div class="g3">${sf('Nacken/HWS',d.schmerz_nacken)}${sf('Schulter',d.schmerz_schulter)}${sf('Rücken/LWS',d.schmerz_lws)}${sf('Hüfte/ISG',d.schmerz_huefte)}${sf('Knie',d.schmerz_knie)}${sf('Sprunggelenk',d.schmerz_sprunggelenk)}</div><div class="g2" style="margin-top:8px">${f('Dauer',d.schmerz_dauer)}${f('Wann',Array.isArray(d.schmerz_wann)?d.schmerz_wann.join(', '):d.schmerz_wann)}${f('Lindert',d.schmerz_lindert)}${f('Verschlechtert',d.schmerz_verschlechtert)}</div></div>`:''}
+    '<h2>Longevity Baseline</h2><table>' +
+    fRow('VO₂max', c.vo2max ? c.vo2max + ' ml/kg/min' : null) +
+    fRow('Grip rechts', c.grip_rechts ? c.grip_rechts + ' kg' : null) +
+    fRow('Grip links', c.grip_links ? c.grip_links + ' kg' : null) +
+    fRow('Balance rechts', c.balance_rechts ? c.balance_rechts + ' sek' : null) +
+    fRow('Chair Stand', c.chair_stand) + '</table>' +
+    '<table style="margin-top:8px">' +
+    fRow('J&P Frau – Ergebnis', c.jp_f_ergebnis ? c.jp_f_ergebnis + ' %' : null) +
+    fRow('J&P Mann – Ergebnis', c.jp_m_ergebnis ? c.jp_m_ergebnis + ' %' : null) + '</table>' +
 
-<div class="sec"><div class="st">Lifestyle</div>
-<div class="g3">${f('Schlaf',d.schlaf_stunden)}${sf('Schlafqualität',d.schlaf_qualitaet)}${sf('Stress',d.stress_level)}${sf('Energie',d.energie_level)}${f('Sitzen/Tag',d.sitz_stunden)}${f('Schritte/Tag',d.schritte_tag)}</div></div>
+    '<h2>Ziele</h2><table>' +
+    fRow('Hauptziel', c.hauptziel) + fRow('Zeitbudget/Wo', c.zeitbudget) +
+    fRow('Ziel in 3 Monaten', c.ziel_3monate) + fRow('Anmerkungen', c.anmerkungen) + '</table>' +
 
-<div class="sec"><div class="st">Training</div>
-<div class="g3">${f('Erfahrung',d.training_jahre)}${f('Frequenz/Wo',d.training_frequenz)}${f('Liegestütze',d.liegestuetze_max)}${f('Plank Hold',d.plank_hold_sek?d.plank_hold_sek+' sek':null)}${f('Wall-Sit',d.wall_sit_sek?d.wall_sit_sek+' sek':null)}${f('1km Laufzeit',d.km_laufzeit)}</div>
-${d.sportarten&&d.sportarten.length?`<div style="margin-top:8px"><div class="fl" style="margin-bottom:3px">Sportarten</div><div class="tags">${d.sportarten.map(s=>`<span class="tag">${s}</span>`).join('')}</div></div>`:''}</div>
+    '<div style="margin-top:24px;padding-top:8px;border-top:1px solid #eee;font-size:9px;color:#aaa;display:flex;justify-content:space-between">' +
+    '<span>Marcel Jurado Personal Training · marceljurado.com</span><span>' + datum + '</span></div>' +
+    '</body></html>';
 
-<div class="sec"><div class="st">Ernährung</div>
-<div class="g3">${f('Mahlzeiten/Tag',d.mahlzeiten_tag)}${f('Wasser',d.wasser_konsum)}${f('Alkohol',d.alkohol)}${f('Koffein',d.koffein)}${f('Unverträglichkeiten',d.unvertraeglichkeiten)}${f('Supplements',d.supplements)}</div>
-${d.ernaehrung_form&&d.ernaehrung_form.length?`<div style="margin-top:8px"><div class="fl" style="margin-bottom:3px">Ernährungsform</div><div class="tags">${d.ernaehrung_form.map(e=>`<span class="tag">${e}</span>`).join('')}</div></div>`:''}</div>
-
-<div class="sec"><div class="st">Longevity Baseline</div>
-<div class="g3">${f('VO₂max',d.vo2max?d.vo2max+' ml/kg/min':null)}${f('Grip rechts',d.grip_rechts?d.grip_rechts+' kg':null)}${f('Grip links',d.grip_links?d.grip_links+' kg':null)}${f('Balance rechts',d.balance_rechts?d.balance_rechts+' sek':null)}${f('Balance links',d.balance_links?d.balance_links+' sek':null)}${f('Sit & Reach',d.sit_reach?d.sit_reach+' cm':null)}${f('Chair Stand',d.chair_stand)}</div>
-<div class="jp-cols">
-<div class="jp-box"><div class="jp-t">J&P – Frau</div><div class="g2">${f('Trizeps',d.jp_f_trizeps?d.jp_f_trizeps+' mm':null)}${f('Hüfte',d.jp_f_huefte?d.jp_f_huefte+' mm':null)}${f('Oberschenkel',d.jp_f_oberschenkel?d.jp_f_oberschenkel+' mm':null)}</div><div class="jp-r">${d.jp_f_ergebnis?d.jp_f_ergebnis+' %':'—'}</div><div class="fl">Körperfett</div></div>
-<div class="jp-box"><div class="jp-t">J&P – Mann</div><div class="g2">${f('Brust',d.jp_m_brust?d.jp_m_brust+' mm':null)}${f('Abdomen',d.jp_m_abdomen?d.jp_m_abdomen+' mm':null)}${f('Oberschenkel',d.jp_m_oberschenkel?d.jp_m_oberschenkel+' mm':null)}</div><div class="jp-r">${d.jp_m_ergebnis?d.jp_m_ergebnis+' %':'—'}</div><div class="fl">Körperfett</div></div>
-</div></div>
-
-<div class="sec"><div class="st">Ziele</div>
-<div class="g2">${f('Hauptziel',d.hauptziel)}${f('Zeitbudget/Wo',d.zeitbudget)}</div>
-${d.ziel_3monate?`<div style="margin-top:8px">${f('Ziel in 3 Monaten',d.ziel_3monate)}</div>`:''}
-${d.was_nicht_funktioniert?`<div style="margin-top:6px">${f('Bisherige Hindernisse',d.was_nicht_funktioniert)}</div>`:''}
-${d.anmerkungen?`<div style="margin-top:6px">${f('Anmerkungen',d.anmerkungen)}</div>`:''}</div>
-
-<div class="ftr"><span>Marcel Jurado Personal Training · marceljurado.com · Berlin Kreuzberg</span><span>Erstellt am ${datum}</span></div>
-</div></body></html>`;
-
-  const win = window.open('','_blank');
-  win.document.write(html);
-  win.document.close();
-  setTimeout(() => win.print(), 600);
+  var w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+  setTimeout(function(){ w.print(); }, 500);
 }
 </script>
 </body>
