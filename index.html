@@ -536,18 +536,18 @@
     <div class="form-step active" id="step-1">
       <div class="step-heading">
         <div class="step-num">01 / 08</div>
-        <h2 class="step-title">Persönliche Daten</h2>
-        <p class="step-sub">Deine Basisinformationen für die Erstellung deines Profils.</p>
+        <h2 class="step-title">Persönliche Daten<br><span style="font-size:18px;font-weight:300;color:var(--muted)">Personal Information</span></h2>
+        <p class="step-sub">Deine Basisinformationen für die Erstellung deines Profils. / Your basic information for creating your profile.</p>
       </div>
 
       <div class="field-grid cols-2">
         <div class="field-group">
-          <label>Vorname *</label>
+          <label>Vorname / First name *</label>
           <input type="text" id="vorname" name="vorname" placeholder="Dein Vorname" required>
           <span class="field-error">Bitte Vornamen eingeben</span>
         </div>
         <div class="field-group">
-          <label>Nachname *</label>
+          <label>Nachname / Last name *</label>
           <input type="text" id="nachname" name="nachname" placeholder="Dein Nachname" required>
           <span class="field-error">Bitte Nachnamen eingeben</span>
         </div>
@@ -560,19 +560,19 @@
           <span class="field-error">Gültige E-Mail-Adresse eingeben</span>
         </div>
         <div class="field-group">
-          <label>Telefon</label>
+          <label>Telefon / Phone</label>
           <input type="tel" id="telefon" name="telefon" placeholder="+49 …">
         </div>
       </div>
 
       <div class="field-grid cols-3" style="margin-top:24px">
         <div class="field-group">
-          <label>Geburtsdatum *</label>
+          <label>Geburtsdatum / Date of birth *</label>
           <input type="date" id="geburtsdatum" name="geburtsdatum" required>
           <span class="field-error">Geburtsdatum angeben</span>
         </div>
         <div class="field-group">
-          <label>Geschlecht</label>
+          <label>Geschlecht / Gender</label>
           <select id="geschlecht" name="geschlecht">
             <option value="">— wählen —</option>
             <option value="weiblich">Weiblich</option>
@@ -581,32 +581,32 @@
           </select>
         </div>
         <div class="field-group">
-          <label>Beruf</label>
+          <label>Beruf / Occupation</label>
           <input type="text" id="beruf" name="beruf" placeholder="Dein Beruf">
         </div>
       </div>
 
       <div class="field-grid cols-2" style="margin-top:24px">
         <div class="field-group">
-          <label>Adresse</label>
+          <label>Adresse / Address</label>
           <input type="text" id="adresse" name="adresse" placeholder="Straße & Hausnummer">
         </div>
         <div class="field-group">
-          <label>PLZ / Ort</label>
+          <label>PLZ / Ort / Zip & City</label>
           <input type="text" id="plz_ort" name="plz_ort" placeholder="10999 Berlin">
         </div>
       </div>
 
-      <div class="section-divider"><span>Körpermessungen</span></div>
+      <div class="section-divider"><span>Körpermessungen / Body measurements</span></div>
 
       <div class="field-grid cols-3">
         <div class="field-group">
-          <label>Größe (cm) *</label>
+          <label>Größe / Height (cm) *</label>
           <input type="number" id="groesse" name="groesse" placeholder="175" min="140" max="220" required oninput="calcBMI()">
           <span class="field-error">Größe angeben</span>
         </div>
         <div class="field-group">
-          <label>Gewicht (kg) *</label>
+          <label>Gewicht / Weight (kg) *</label>
           <input type="number" id="gewicht" name="gewicht" placeholder="72" min="40" max="200" step="0.1" required oninput="calcBMI()">
           <span class="field-error">Gewicht angeben</span>
         </div>
@@ -617,31 +617,31 @@
         </div>
       </div>
 
-      <div class="section-divider"><span>Körperumfänge (optional)</span></div>
+      <div class="section-divider"><span>Körperumfänge / Body circumferences (optional)</span></div>
 
       <div class="field-grid cols-3">
         <div class="field-group">
-          <label>Oberarm (cm)</label>
+          <label>Oberarm / Upper arm (cm)</label>
           <input type="number" id="oberarm" name="oberarm" placeholder="32" step="0.1" min="10" max="60">
         </div>
         <div class="field-group">
-          <label>Brust (cm)</label>
+          <label>Brust / Chest (cm)</label>
           <input type="number" id="brust" name="brust" placeholder="95" step="0.1" min="50" max="180">
         </div>
         <div class="field-group">
-          <label>Taille (cm)</label>
+          <label>Taille / Waist (cm)</label>
           <input type="number" id="taille" name="taille" placeholder="80" step="0.1" min="40" max="160">
         </div>
         <div class="field-group">
-          <label>Hüfte (cm)</label>
+          <label>Hüfte / Hip (cm)</label>
           <input type="number" id="huefte" name="huefte" placeholder="95" step="0.1" min="50" max="180">
         </div>
         <div class="field-group">
-          <label>Gesamtumfang Beine / Po (cm)</label>
+          <label>Beine & Po / Legs & Glutes (cm)</label>
           <input type="number" id="beine_po" name="beine_po" placeholder="100" step="0.1" min="40" max="180">
         </div>
         <div class="field-group">
-          <label>Oberschenkel (cm)</label>
+          <label>Oberschenkel / Thigh (cm)</label>
           <input type="number" id="oberschenkel" name="oberschenkel" placeholder="55" step="0.1" min="20" max="100">
         </div>
       </div>
@@ -659,11 +659,11 @@
     <div class="form-step" id="step-2">
       <div class="step-heading">
         <div class="step-num">02 / 08</div>
-        <h2 class="step-title">Gesundheit & Medizin</h2>
-        <p class="step-sub">PAR-Q+ Risikoabfrage + medizinische Vorgeschichte. Alle Angaben sind vertraulich und dienen deiner Sicherheit.</p>
+        <h2 class="step-title">Gesundheit & Medizin<br><span style="font-size:18px;font-weight:300;color:var(--muted)">Health & Medical History</span></h2>
+        <p class="step-sub">PAR-Q+ Risikoabfrage + medizinische Vorgeschichte. / Risk screening + medical history. All information is confidential.</p>
       </div>
 
-      <div class="section-divider"><span>PAR-Q+ Kardiovaskuläre Risikoabfrage</span></div>
+      <div class="section-divider"><span>PAR-Q+ Cardiovascular risk screening</span></div>
 
       <div class="field-grid" style="gap:14px">
         <div class="field-group">
@@ -720,7 +720,7 @@
         ⚠️ Aufgrund deiner Angaben empfehle ich vor Trainingsbeginn eine ärztliche Freigabe. Ich werde dich bei der Terminvereinbarung darauf hinweisen und ggf. ein ärztliches Attest anfordern.
       </div>
 
-      <div class="section-divider"><span>Risikofaktoren</span></div>
+      <div class="section-divider"><span>Risikofaktoren / Risk factors</span></div>
 
       <div class="field-group">
         <label>Bestehende Risikofaktoren (Mehrfachauswahl möglich)</label>
@@ -736,21 +736,21 @@
         </div>
       </div>
 
-      <div class="section-divider"><span>Verletzungen & OPs</span></div>
+      <div class="section-divider"><span>Verletzungen & OPs / Injuries & surgeries</span></div>
 
       <div class="field-grid cols-2">
         <div class="field-group">
-          <label>Frühere Verletzungen / Erkrankungen</label>
+          <label>Verletzungen / Injuries & Conditions</label>
           <textarea name="verletzungen" placeholder="z.B. Kreuzbandriss 2019 rechts, Schulter-OP 2021…" style="min-height:100px"></textarea>
         </div>
         <div class="field-group">
-          <label>Operationen</label>
+          <label>Operationen / Surgeries</label>
           <textarea name="ops" placeholder="z.B. Meniskus OP 2020, Bandscheiben-OP L4/L5…" style="min-height:100px"></textarea>
         </div>
       </div>
 
       <div class="field-group" style="margin-top:24px">
-        <label>Aktueller bekannter Blutdruck (mmHg)</label>
+        <label>Blutdruck / Blood pressure (mmHg)</label>
         <input type="text" name="blutdruck" placeholder="z.B. 125/80" style="max-width:200px">
       </div>
 
@@ -770,7 +770,7 @@
     <div class="form-step" id="step-3">
       <div class="step-heading">
         <div class="step-num">03 / 08</div>
-        <h2 class="step-title">Schmerzen & Beschwerden</h2>
+        <h2 class="step-title">Schmerzen & Beschwerden<br><span style="font-size:18px;font-weight:300;color:var(--muted)">Pain & Symptoms</span></h2>
         <p class="step-sub">Bewerte aktuelle Schmerzen (0 = kein Schmerz, 10 = stärkster vorstellbarer Schmerz).</p>
       </div>
 
@@ -783,7 +783,7 @@
       </div>
 
       <div id="schmerz_details" style="display:none">
-        <div class="section-divider"><span>Schmerzintensität nach Körperregion</span></div>
+        <div class="section-divider"><span>Schmerzintensität / Pain intensity by body region</span></div>
 
         <div class="body-grid">
           <!-- Nacken -->
@@ -848,11 +848,11 @@
           </div>
         </div>
 
-        <div class="section-divider"><span>Schmerzcharakter</span></div>
+        <div class="section-divider"><span>Schmerzcharakter / Pain characteristics</span></div>
 
         <div class="field-grid cols-2">
           <div class="field-group">
-            <label>Seit wann bestehen die Hauptbeschwerden?</label>
+            <label>Beschwerdedauer / Duration of symptoms</label>
             <select name="schmerz_dauer">
               <option value="">— wählen —</option>
               <option>Akut (< 6 Wochen)</option>
@@ -872,17 +872,17 @@
 
         <div class="field-grid cols-2" style="margin-top:24px">
           <div class="field-group">
-            <label>Was lindert die Schmerzen?</label>
+            <label>Was lindert / What relieves pain?</label>
             <input type="text" name="schmerz_lindert" placeholder="z.B. Wärme, Ruhe, Dehnen…">
           </div>
           <div class="field-group">
-            <label>Was verschlechtert die Schmerzen?</label>
+            <label>Was verschlechtert / What worsens pain?</label>
             <input type="text" name="schmerz_verschlechtert" placeholder="z.B. Sitzen, Treppensteigen…">
           </div>
         </div>
 
         <div class="field-group" style="margin-top:24px">
-          <label>Frühere Physiotherapie oder Behandlungen?</label>
+          <label>Frühere Physio / Previous physiotherapy</label>
           <textarea name="physio_vorher" placeholder="Was wurde behandelt? Mit welchem Ergebnis?"></textarea>
         </div>
       </div>
@@ -903,15 +903,15 @@
     <div class="form-step" id="step-4">
       <div class="step-heading">
         <div class="step-num">04 / 08</div>
-        <h2 class="step-title">Lifestyle & Alltag</h2>
+        <h2 class="step-title">Lifestyle & Alltag<br><span style="font-size:18px;font-weight:300;color:var(--muted)">Lifestyle & Daily Routine</span></h2>
         <p class="step-sub">Schlaf, Stress und Arbeitsalltag sind entscheidende Faktoren für deinen Trainingserfolg.</p>
       </div>
 
-      <div class="section-divider"><span>Schlaf</span></div>
+      <div class="section-divider"><span>Schlaf / Sleep</span></div>
 
       <div class="field-grid cols-2">
         <div class="field-group">
-          <label>Durchschnittliche Schlafdauer</label>
+          <label>Schlafdauer / Average sleep duration</label>
           <select name="schlaf_stunden">
             <option value="">— wählen —</option>
             <option>< 5 Stunden</option>
@@ -932,10 +932,10 @@
         </div>
       </div>
 
-      <div class="section-divider"><span>Stress & Mentale Gesundheit</span></div>
+      <div class="section-divider"><span>Stress & Mental Health</span></div>
 
       <div class="field-group">
-        <label>Durchschnittliches Stresslevel (letzte 4 Wochen)</label>
+        <label>Stresslevel / Stress level (last 4 weeks)</label>
         <div class="scale-wrap" style="margin-top:4px">
           <div class="scale-labels"><span>1 – kaum Stress</span><span>10 – extremer Stress</span></div>
           <input type="range" name="stress_level" min="1" max="10" value="5"
@@ -945,7 +945,7 @@
       </div>
 
       <div class="field-group" style="margin-top:24px">
-        <label>Subjektive Energie / Vitalität (allgemein)</label>
+        <label>Energie / Energy & Vitality</label>
         <div class="scale-wrap" style="margin-top:4px">
           <div class="scale-labels"><span>1 – erschöpft</span><span>10 – voller Energie</span></div>
           <input type="range" name="energie_level" min="1" max="10" value="5"
@@ -954,11 +954,11 @@
         </div>
       </div>
 
-      <div class="section-divider"><span>Arbeitsalltag</span></div>
+      <div class="section-divider"><span>Arbeitsalltag / Daily work life</span></div>
 
       <div class="field-grid cols-2">
         <div class="field-group">
-          <label>Tägliche Sitz-Stunden (Büro/Homeoffice)</label>
+          <label>Sitzen / Daily sitting hours</label>
           <select name="sitz_stunden">
             <option value="">— wählen —</option>
             <option>< 2 Stunden</option>
@@ -969,7 +969,7 @@
           </select>
         </div>
         <div class="field-group">
-          <label>Tägliche Schritte (Schätzung)</label>
+          <label>Schritte / Daily steps (estimate)</label>
           <select name="schritte_tag">
             <option value="">— wählen —</option>
             <option>< 3.000</option>
@@ -981,7 +981,7 @@
       </div>
 
       <div class="field-group" style="margin-top:24px">
-        <label>Berufsbedingte körperliche Belastungen</label>
+        <label>Berufsbelastung / Occupational physical strain</label>
         <input type="text" name="berufsbelastung" placeholder="z.B. viel Stehen, schweres Heben, Bildschirmarbeit…">
       </div>
 
@@ -1001,13 +1001,13 @@
     <div class="form-step" id="step-5">
       <div class="step-heading">
         <div class="step-num">05 / 08</div>
-        <h2 class="step-title">Trainingsgeschichte</h2>
+        <h2 class="step-title">Trainingsgeschichte<br><span style="font-size:18px;font-weight:300;color:var(--muted)">Training History</span></h2>
         <p class="step-sub">Dein sportlicher Hintergrund hilft mir, das Training optimal anzupassen.</p>
       </div>
 
       <div class="field-grid cols-2">
         <div class="field-group">
-          <label>Trainingserfahrung (Jahre)</label>
+          <label>Trainingserfahrung / Training experience (years)</label>
           <select name="training_jahre">
             <option value="">— wählen —</option>
             <option>Kein Training bisher</option>
@@ -1018,7 +1018,7 @@
           </select>
         </div>
         <div class="field-group">
-          <label>Aktuelle Trainingsfrequenz / Woche</label>
+          <label>Trainingsfrequenz / Training frequency per week</label>
           <select name="training_frequenz">
             <option value="">— wählen —</option>
             <option>0 – kein Training</option>
@@ -1031,7 +1031,7 @@
       </div>
 
       <div class="field-group" style="margin-top:24px">
-        <label>Welche Sportarten / Trainingsformen machst du aktuell?</label>
+        <label>Sportarten / Current sports & training</label>
         <div class="check-grid">
           <label class="check-item"><input type="checkbox" name="sportarten" value="krafttraining"> <span>Krafttraining</span></label>
           <label class="check-item"><input type="checkbox" name="sportarten" value="laufen"> <span>Laufen</span></label>
@@ -1046,29 +1046,29 @@
         </div>
       </div>
 
-      <div class="section-divider"><span>Fitnesstests (falls bereits bekannt)</span></div>
+      <div class="section-divider"><span>Fitnesstests / Fitness tests (if known)</span></div>
 
       <div class="field-grid cols-2">
         <div class="field-group">
-          <label>Liegestütze (maximale Wiederholungen)</label>
+          <label>Liegestütze / Push-ups (max reps)</label>
           <input type="number" name="liegestuetze_max" placeholder="z.B. 20" min="0" max="200">
         </div>
         <div class="field-group">
-          <label>Plank Hold (Sekunden)</label>
+          <label>Plank Hold (seconds)</label>
           <input type="number" name="plank_hold_sek" placeholder="z.B. 60" min="0" max="600">
         </div>
         <div class="field-group">
-          <label>Wall-Sit Hold (Sekunden)</label>
+          <label>Wall-Sit Hold (seconds)</label>
           <input type="number" name="wall_sit_sek" placeholder="z.B. 45" min="0" max="600">
         </div>
         <div class="field-group">
-          <label>1 km Laufzeit (min:sek)</label>
+          <label>1 km Laufzeit / Run time (min:sec)</label>
           <input type="text" name="km_laufzeit" placeholder="z.B. 5:30">
         </div>
       </div>
 
       <div class="field-group" style="margin-top:24px">
-        <label>Bisherige Erfahrungen mit Personal Training / Coaching</label>
+        <label>PT-Erfahrung / Previous personal training experience</label>
         <textarea name="pt_erfahrung" placeholder="Was hast du schon gemacht? Was hat gut funktioniert, was nicht?"></textarea>
       </div>
 
@@ -1088,13 +1088,13 @@
     <div class="form-step" id="step-6">
       <div class="step-heading">
         <div class="step-num">06 / 08</div>
-        <h2 class="step-title">Ernährung</h2>
+        <h2 class="step-title">Ernährung<br><span style="font-size:18px;font-weight:300;color:var(--muted)">Nutrition</span></h2>
         <p class="step-sub">Ernährungsgewohnheiten sind ein zentraler Bestandteil deines Longevity-Profils.</p>
       </div>
 
       <div class="field-grid cols-2">
         <div class="field-group">
-          <label>Mahlzeiten pro Tag (durchschnittlich)</label>
+          <label>Mahlzeiten / Meals per day (average)</label>
           <select name="mahlzeiten_tag">
             <option value="">— wählen —</option>
             <option>1 Mahlzeit</option>
@@ -1104,7 +1104,7 @@
           </select>
         </div>
         <div class="field-group">
-          <label>Wasserkonsum täglich</label>
+          <label>Wasserkonsum / Daily water intake</label>
           <select name="wasser_konsum">
             <option value="">— wählen —</option>
             <option>< 1 Liter</option>
@@ -1116,7 +1116,7 @@
       </div>
 
       <div class="field-group" style="margin-top:24px">
-        <label>Ernährungsform / besondere Ernährungsweise</label>
+        <label>Ernährungsform / Dietary approach</label>
         <div class="check-grid">
           <label class="check-item"><input type="checkbox" name="ernaehrung_form" value="omnivore"> <span>Omnivor (alles)</span></label>
           <label class="check-item"><input type="checkbox" name="ernaehrung_form" value="vegetarisch"> <span>Vegetarisch</span></label>
@@ -1131,7 +1131,7 @@
 
       <div class="field-grid cols-2" style="margin-top:24px">
         <div class="field-group">
-          <label>Alkoholkonsum pro Woche</label>
+          <label>Alkohol / Alcohol consumption per week</label>
           <select name="alkohol">
             <option value="">— wählen —</option>
             <option>Kein Alkohol</option>
@@ -1141,7 +1141,7 @@
           </select>
         </div>
         <div class="field-group">
-          <label>Koffeinkonsum täglich</label>
+          <label>Koffein / Daily caffeine intake</label>
           <select name="koffein">
             <option value="">— wählen —</option>
             <option>Kein Koffein</option>
@@ -1153,12 +1153,12 @@
       </div>
 
       <div class="field-group" style="margin-top:24px">
-        <label>Verdauungsprobleme / Unverträglichkeiten</label>
+        <label>Unverträglichkeiten / Intolerances & digestive issues</label>
         <input type="text" name="unvertraeglichkeiten" placeholder="z.B. Laktoseintoleranz, Glutenunverträglichkeit, Blähungen…">
       </div>
 
       <div class="field-group" style="margin-top:24px">
-        <label>Aktuelle Supplementierung</label>
+        <label>Supplements / Current supplementation</label>
         <input type="text" name="supplements" placeholder="z.B. Vitamin D3, Magnesium, Omega-3, Kreatin…">
       </div>
 
@@ -1301,12 +1301,12 @@
     <div class="form-step" id="step-8">
       <div class="step-heading">
         <div class="step-num">08 / 08</div>
-        <h2 class="step-title">Ziele & Erwartungen</h2>
+        <h2 class="step-title">Ziele & Erwartungen<br><span style="font-size:18px;font-weight:300;color:var(--muted)">Goals & Expectations</span></h2>
         <p class="step-sub">Was treibt dich an? Klare Ziele sind der Ausgangspunkt für dein individuelles Programm.</p>
       </div>
 
       <div class="field-group">
-        <label>Was ist dein wichtigstes Trainingsziel?</label>
+        <label>Hauptziel / What is your primary training goal?</label>
         <div class="check-grid">
           <label class="check-item"><input type="radio" name="hauptziel" value="gewicht"> <span>Gewichtsreduktion</span></label>
           <label class="check-item"><input type="radio" name="hauptziel" value="muskelaufbau"> <span>Muskelaufbau</span></label>
@@ -1320,17 +1320,17 @@
       </div>
 
       <div class="field-group" style="margin-top:24px">
-        <label>Was möchtest du in 3 Monaten erreicht haben?</label>
+        <label>Ziel in 3 Monaten / Goal in 3 months</label>
         <textarea name="ziel_3monate" placeholder="Beschreibe so konkret wie möglich: Was soll sich verändert haben?"></textarea>
       </div>
 
       <div class="field-group" style="margin-top:24px">
-        <label>Was hast du bisher schon versucht und weshalb hat es nicht funktioniert?</label>
+        <label>Bisherige Versuche / What have you tried before?</label>
         <textarea name="was_nicht_funktioniert" placeholder="Ehrliche Antwort hilft mir, die richtigen Strategien zu wählen."></textarea>
       </div>
 
       <div class="field-group" style="margin-top:24px">
-        <label>Zeitliche Verfügbarkeit für Training pro Woche</label>
+        <label>Zeitbudget / Available training time per week</label>
         <div class="check-grid">
           <label class="check-item"><input type="radio" name="zeitbudget" value="1-2h"> <span>1–2 Std / Wo</span></label>
           <label class="check-item"><input type="radio" name="zeitbudget" value="3-4h"> <span>3–4 Std / Wo</span></label>
@@ -1340,7 +1340,7 @@
       </div>
 
       <div class="field-group" style="margin-top:24px">
-        <label>Bevorzugtes Training</label>
+        <label>Bevorzugtes Training / Preferred training format</label>
         <div class="check-grid">
           <label class="check-item"><input type="checkbox" name="training_pref" value="pt_1zu1"> <span>1:1 Personal Training</span></label>
           <label class="check-item"><input type="checkbox" name="training_pref" value="online"> <span>Online Coaching</span></label>
@@ -1349,7 +1349,7 @@
       </div>
 
       <div class="field-group" style="margin-top:24px">
-        <label>Weitere Informationen oder Anmerkungen</label>
+        <label>Anmerkungen / Additional notes</label>
         <textarea name="anmerkungen" placeholder="Alles was ich noch wissen sollte…" style="min-height:100px"></textarea>
       </div>
 
@@ -1403,8 +1403,8 @@
 
 <script>
 // ── CONFIG: Supabase ──────────────────────────────────────────────────
-const SUPABASE_URL  = 'https://llqftswzsvjhfolvpfqy.supabase.co';  // ← anpassen
-const SUPABASE_KEY  = 'sb_publishable_1PTHhbrNvSOmrHYn3bJHxg_CUfrlTJH';                  // ← anpassen
+const SUPABASE_URL  = 'https://DEINE-PROJEKT-ID.supabase.co';  // ← anpassen
+const SUPABASE_KEY  = 'DEIN-ANON-PUBLIC-KEY';                  // ← anpassen
 const TABLE_NAME    = 'anamneseboegen';
 
 // ── STATE ─────────────────────────────────────────────────────────────
