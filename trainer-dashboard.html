@@ -382,7 +382,7 @@ function generatePDF(id) {
     '.hdr-r{text-align:right;font-size:11px;color:#666;line-height:1.8}.hdr-r strong{color:#080821;font-size:13px}' +
     '.tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}.tag{background:#f0fffe;border:1px solid #4fd1c5;border-radius:3px;padding:1px 6px;font-size:9px}' +
     '.ftr{margin-top:24px;padding-top:8px;border-top:1px solid #eee;font-size:9px;color:#aaa;display:flex;justify-content:space-between}' +
-    '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>' +
+    '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}@page{margin:0}body{padding:10mm 14mm}}</style></head><body>' +
 
     '<div class="hdr"><div><h1>Anamnesebogen</h1><p>Marcel Jurado Personal Training · Physiotherapie</p></div>' +
     '<div class="hdr-r"><strong>' + (d.vorname||'') + ' ' + (d.nachname||'') + '</strong><br>' +
