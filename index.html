@@ -1179,7 +1179,40 @@
         <textarea name="anmerkungen" placeholder="Alles was ich noch wissen sollte…" style="min-height:100px"></textarea>
       </div>
 
-      <!-- Datenschutz -->
+      <!-- ══ WHATSAPP OPT-IN ══════════════════════════════════════ -->
+      <div style="margin-bottom:28px; padding:22px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.10); border-radius:6px">
+        <div style="font-size:11px; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; color:var(--teal); margin-bottom:12px">Kommunikation per WhatsApp (optional)</div>
+        <p style="font-size:12px; line-height:1.7; color:var(--muted); margin-bottom:16px">
+          Ich nutze WhatsApp für den unkomplizierten, organisatorischen Austausch. Wichtig: Über WhatsApp besprechen wir <strong style="color:var(--text)">keine</strong> Gesundheitsdaten, Befunde oder Diagnosen — dafür nutzen wir sichere Wege bzw. den persönlichen Termin.<br><br>
+          <em>I use WhatsApp for simple, organizational communication only — no health data, findings or diagnoses are discussed there.</em>
+        </p>
+
+        <label style="display:flex; align-items:flex-start; gap:14px; cursor:pointer; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); padding:14px 16px; border-radius:4px; margin-bottom:10px; transition:all 0.25s ease">
+          <input type="checkbox" id="wa_orga" onchange="toggleWaNummer()" style="display:block !important; width:18px; height:18px; min-width:18px; accent-color:var(--teal); cursor:pointer; margin-top:2px">
+          <span style="font-size:13px; line-height:1.6; color:var(--text)">
+            Ja, ich möchte <strong>organisatorische Nachrichten</strong> (z. B. Terminerinnerungen und -bestätigungen, kurze Check-ins) von Marcel Jurado Personal Training über WhatsApp erhalten. Mir ist bewusst, dass ich diese Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen kann — z. B. per Nachricht „STOPP".
+          </span>
+        </label>
+
+        <label style="display:flex; align-items:flex-start; gap:14px; cursor:pointer; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); padding:14px 16px; border-radius:4px; transition:all 0.25s ease">
+          <input type="checkbox" id="wa_marketing" onchange="toggleWaNummer()" style="display:block !important; width:18px; height:18px; min-width:18px; accent-color:var(--teal); cursor:pointer; margin-top:2px">
+          <span style="font-size:13px; line-height:1.6; color:var(--text)">
+            Ja, ich möchte zusätzlich <strong>Motivations-Impulse, Tipps und gelegentliche Angebote</strong> über WhatsApp erhalten.
+            <span style="color:var(--muted)">(Optional — für das Training nicht erforderlich, jederzeit widerrufbar.)</span>
+          </span>
+        </label>
+
+        <div class="field-group" id="wa_nummer_group" style="display:none; margin-top:18px">
+          <label>Deine WhatsApp-Nummer / Your WhatsApp number *</label>
+          <input type="tel" id="wa_nummer" placeholder="+49 176 1234567">
+          <span id="wa_nummer_error" style="display:none; font-size:11px; color:var(--error); margin-top:8px; letter-spacing:0.05em">⚠ Bitte WhatsApp-Nummer mit Ländervorwahl angeben (z. B. +49 …)</span>
+        </div>
+
+        <p style="font-size:11px; line-height:1.6; color:var(--muted); margin-top:18px">
+          <strong>Hinweis zum Datenschutz (WhatsApp):</strong> Bei Zustimmung verarbeite ich deine Telefonnummer und den Nachrichtenverlauf, um mit dir zu kommunizieren. Ich nutze dafür die WhatsApp Business Platform (API) über den Auftragsverarbeiter Superchat (Sitz in der EU). Technischer Betreiber ist WhatsApp/Meta; dabei können Daten in die USA übertragen werden. Rechtsgrundlage ist deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), widerrufbar jederzeit mit Wirkung für die Zukunft — per WhatsApp-Nachricht „STOPP" oder E-Mail. Details in der
+          <a href="https://www.marceljurado.com/datenschutz" target="_blank" style="color:var(--teal); text-decoration:underline">Datenschutzerklärung</a>.
+        </p>
+      </div>
       <div style="margin-top:32px; padding:20px; background:rgba(79,209,197,0.04); border:1px solid rgba(79,209,197,0.2); border-radius:6px">
         <div style="font-size:11px; font-weight:500; letter-spacing:0.15em; text-transform:uppercase; color:var(--teal); margin-bottom:12px">Datenschutz *</div>
         <p style="font-size:12px; line-height:1.7; color:var(--muted); margin-bottom:14px">
@@ -1229,6 +1262,23 @@
 const SUPABASE_URL  = 'https://llqftswzsvjhfolvpfqy.supabase.co';  // ← anpassen
 const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxscWZ0c3d6c3ZqaGZvbHZwZnF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk1MjU3ODYsImV4cCI6MjA4NTEwMTc4Nn0.lmBNkuSwx_rtGz38DF62iLHOsO3qBv_0To8u2oTtOX0';                  // ← anpassen
 const TABLE_NAME    = 'anamneseboegen';
+
+// ── WHATSAPP OPT-IN ───────────────────────────────────────────────────
+const CONSENT_VERSION = 'wa-v1.0-2026-07';
+
+function toggleWaNummer() {
+  const wanted = document.getElementById('wa_orga').checked
+              || document.getElementById('wa_marketing').checked;
+  document.getElementById('wa_nummer_group').style.display = wanted ? 'block' : 'none';
+  if (!wanted) {
+    document.getElementById('wa_nummer').value = '';
+    document.getElementById('wa_nummer_error').style.display = 'none';
+  }
+}
+
+function waNummerClean() {
+  return document.getElementById('wa_nummer').value.replace(/[\s\-()\/]/g, '');
+}
 
 // ── STATE ─────────────────────────────────────────────────────────────
 let currentStep = 1;
@@ -1399,6 +1449,17 @@ function collectData() {
   // Timestamp
   data['erstellt_am'] = new Date().toISOString();
 
+  // WhatsApp-Einwilligung (Nachweis: was, wann, welcher Wortlaut)
+  const waOrga = document.getElementById('wa_orga').checked;
+  const waMkt  = document.getElementById('wa_marketing').checked;
+  const waAny  = waOrga || waMkt;
+
+  data['whatsapp_optin_orga']      = waOrga;
+  data['whatsapp_optin_marketing'] = waMkt;
+  data['whatsapp_nummer']          = waAny ? waNummerClean() : null;
+  data['whatsapp_consent_version'] = waAny ? CONSENT_VERSION : null;
+  data['whatsapp_consent_am']      = waAny ? new Date().toISOString() : null;
+
   return data;
 }
 
@@ -1412,6 +1473,17 @@ async function submitForm() {
     return;
   }
   dsErr.style.display = 'none';
+
+  // WhatsApp-Nummer prüfen, wenn Opt-in gesetzt
+  const waWanted = document.getElementById('wa_orga').checked
+                || document.getElementById('wa_marketing').checked;
+  const waNumErr = document.getElementById('wa_nummer_error');
+  if (waWanted && !/^\+[1-9]\d{7,14}$/.test(waNummerClean())) {
+    waNumErr.style.display = 'block';
+    document.getElementById('wa_nummer').focus();
+    return;
+  }
+  waNumErr.style.display = 'none';
 
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
